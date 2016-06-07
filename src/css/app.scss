@@ -1,0 +1,10 @@
+#grid{
+    margin-top: 100px;
+    text-align: center;
+
+    .cell {
+        display: inline-block;
+        padding: 20px;
+        outline: 1px solid grey;
+    }
+}
