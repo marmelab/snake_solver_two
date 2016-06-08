@@ -1,7 +1,7 @@
-install:
-	@ npm i	
+install: ## Install dependencies
+	@ npm i
 
-run:
+run: ## Run application
 	@ echo '* Start webpack dev server *'
 	@ NODE_ENV=development TARGET=web ./node_modules/.bin/webpack-dev-server \
 		-d \
@@ -12,3 +12,7 @@ run:
 		--no-info \
 		--hot \
 		--inline
+
+.PHONY: test
+test: ## Run unit tests
+	@ NODE_ENV=test ./node_modules/.bin/mocha --compilers js:babel-core/register --require babel-polyfill test/setup.js test/*.spec.js
