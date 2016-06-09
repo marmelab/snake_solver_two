@@ -1,4 +1,5 @@
 import React from 'react';
+import Cell from './cell';
 
 const EMPTY = 0;
 const WALL = 1;
@@ -26,19 +27,9 @@ const generateGrid = (width, height, snake, apple) => {
     return grid;
 };
 
-const Cell = (props) => (<div className={props.type}></div>);
-Cell.propTypes = {
-    type: React.PropTypes.string,
-};
-
-const Grid = (props) => {
-    const cells = [];
-    const width = props.width;
-    const height = props.height;
-    const snake = props.snake;
-    const apple = props.apple;
-
+const Grid = ({ width, height, snake, apple }) => {
     const grid = generateGrid(width, height, snake, apple);
+    const cells = [];
 
     for (let x = 0; x < width; x++) {
         for (let y = 0; y < height; y++) {
@@ -57,9 +48,7 @@ const Grid = (props) => {
         }
     }
 
-    return (
-        <div id="grid">{cells}</div>
-    );
+    return <div id="grid">{cells}</div>;
 };
 
 Grid.propTypes = {

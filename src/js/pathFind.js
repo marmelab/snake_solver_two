@@ -8,9 +8,10 @@ class PathFind {
         this.start = start;
         this.end = end;
         this.grid = grid;
-        this.currentPath = [];
-        this.wasHere = [];
-        this.paths = [];
+
+        if (start.length > 1) {
+            this.start = start[start.length - 1];
+        }
     }
 
     isCollide(cell) {
@@ -20,10 +21,13 @@ class PathFind {
         if (x < MIN || y < MIN || x >= MAX || y >= MAX) {
             return true;
         }
+        if (JSON.stringify(cell) === JSON.stringify(this.start)) {
+            return false;
+        }
         return (this.grid[x][y] === WALL) || false;
     }
 
-    neighbors(cell) {
+    static neighbors(cell) {
         const [x, y] = cell;
         return [
             [x - 1, y], // Up
@@ -33,7 +37,7 @@ class PathFind {
         ];
     }
 
-    pathAlreadyTest(path) {
+    isPathAlreadyTested(path) {
         for (let i = 0; i < this.paths.length; i++) {
             if (JSON.stringify(this.paths[i]) === JSON.stringify(path)) {
                 return true;
@@ -42,7 +46,7 @@ class PathFind {
         return false;
     }
 
-    cellAlreadyTest(cell) {
+    isCellAlreadyTested(cell) {
         for (let i = 0; i < this.wasHere.length; i++) {
             if (JSON.stringify(this.wasHere[i]) === JSON.stringify(cell)) {
                 return true;
@@ -52,27 +56,35 @@ class PathFind {
     }
 
     solve() {
-        const path = this.recursiveSolve(this.start);
         this.currentPath = [];
         this.wasHere = [];
+        this.paths = [];
+
+        this.recursiveSolve(this.start);
+        const path = this.currentPath;
+        path.reverse();
 
         return path;
     }
 
     recursiveSolve(current) {
-        this.wasHere.push(current);
-        this.currentPath.push(current);
-
         if (JSON.stringify(current) === JSON.stringify(this.end)) {
-            this.currentPath.shift();
-            return this.currentPath;
+            return true;
         }
 
-        const neighbors = this.neighbors(current);
+        if (this.isCollide(current) || this.isCellAlreadyTested(current)) {
+            return false;
+        }
+
+        this.wasHere.push(current);
+
+        const neighbors = PathFind.neighbors(current);
         for (let i = 0; i < neighbors.length; i++) {
             const neighbor = neighbors[i];
-            if (!this.isCollide(neighbor) && !this.cellAlreadyTest(neighbor)) {
-                return this.recursiveSolve(neighbor);
+
+            if (this.recursiveSolve(neighbor)) {
+                this.currentPath.push(neighbor);
+                return true;
             }
         }
 
