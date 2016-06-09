@@ -1,7 +1,9 @@
-#grid{
+#app {
     margin: 100px auto 0 auto;
     width: 400px;
+}
 
+#grid{
     @mixin cell {
         display: inline-block;
         outline: 1px solid grey;

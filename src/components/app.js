@@ -5,6 +5,7 @@ import PathFind from '../js/pathFind';
 
 let queue = [];
 let apple = [4, 4];
+let score = 0;
 
 const speed = 10;
 const width = 10;
@@ -27,8 +28,8 @@ const update = () => {
         snake.push(queue.shift());
     }
 
-    const head = snake[snake.length - 1];
-    if (JSON.stringify(head) === JSON.stringify(apple)) {
+    if (JSON.stringify(snake[snake.length - 1]) === JSON.stringify(apple)) {
+        score++;
         random();
     } else {
         snake.shift();
@@ -52,19 +53,22 @@ class App extends React.Component {
     tick() {
         setTimeout(() => {
             update();
-            this.setState({ snake, apple });
+            this.setState({ snake, apple, score });
             this.tick();
         }, speed);
     }
 
     render() {
         return (
-            <Grid
-                width={width}
-                height={height}
-                snake={this.state.snake}
-                apple={this.state.apple}
-            />
+            <div>
+                <div className="score">Score: {this.state.score}</div>
+                <Grid
+                    width={width}
+                    height={height}
+                    snake={this.state.snake}
+                    apple={this.state.apple}
+                />
+            </div>
         );
     }
 }
