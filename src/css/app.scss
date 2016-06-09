@@ -1,10 +1,30 @@
 #grid{
-    margin-top: 100px;
-    text-align: center;
+    margin: 100px auto 0 auto;
+    width: 400px;
 
-    .cell {
+    @mixin cell {
         display: inline-block;
-        padding: 20px;
         outline: 1px solid grey;
+        padding: 20px;
+    }
+
+    div {
+        @include cell;
+        background-color: white;
+    }
+
+    .snake {
+        @include cell;
+        background-color: #00FF00;
+    }
+
+    .head {
+        @include cell;
+        background-color: #006400;
+    }
+
+    .apple {
+        @include cell;
+        background-color: red;
     }
 }
