@@ -1,34 +1,9 @@
 import React from 'react';
 import Cell from './cell';
-
-const EMPTY = 0;
-const WALL = 1;
-const APPLE = 2;
-
-const generateGrid = (width, height, snake, apple) => {
-    const grid = new Array(width);
-    for (let x = 0; x < width; x++) {
-        grid[x] = new Array(height);
-        grid[x].fill(EMPTY);
-
-        for (let y = 0; y < height; y++) {
-            const cell = [x, y];
-            snake.forEach((position) => {
-                if (JSON.stringify(cell) === JSON.stringify(position)) {
-                    grid[x][y] = WALL;
-                }
-            });
-        }
-    }
-
-    const [xApple, yApple] = apple;
-    grid[xApple][yApple] = APPLE;
-
-    return grid;
-};
+import Game from '../js/game';
 
 const Grid = ({ width, height, snake, apple }) => {
-    const grid = generateGrid(width, height, snake, apple);
+    const grid = Game.generateGrid(width, height, snake, apple);
     const cells = [];
 
     for (let x = 0; x < width; x++) {
@@ -36,10 +11,10 @@ const Grid = ({ width, height, snake, apple }) => {
             const cell = grid[x][y];
 
             switch (cell) {
-            case WALL:
+            case Game.WALL:
                 cells.push(<Cell type="snake" />);
                 break;
-            case APPLE:
+            case Game.APPLE:
                 cells.push(<Cell type="apple" />);
                 break;
             default:
@@ -58,7 +33,4 @@ Grid.propTypes = {
     apple: React.PropTypes.array.isRequired,
 };
 
-export {
-    Grid,
-    generateGrid,
-};
+export default Grid;

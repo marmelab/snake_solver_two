@@ -1,14 +1,14 @@
 import PathFind from '../src/js/pathFind';
-import { generateGrid } from '../src/components/grid';
+import Game from '../src/js/game';
 
 const width = 5;
 const height = 5;
 const apple = [4, 4];
 
-describe('findPath', () => {
+describe('pathFind', () => {
     it('should test collides', () => {
         const snake = [[2, 1], [2, 2], [2, 3]];
-        const grid = generateGrid(width, height, snake, apple);
+        const grid = Game.generateGrid(width, height, snake, apple);
         const pathFind = new PathFind(snake, apple, grid);
         assert.isTrue(pathFind.isCollide([2, -1]));
         assert.isTrue(pathFind.isCollide([2, 1]));
@@ -22,7 +22,7 @@ describe('findPath', () => {
 
     it('should check if path is already test', () => {
         const snake = [[2, 0], [2, 1], [2, 2]];
-        const grid = generateGrid(width, height, snake, apple);
+        const grid = Game.generateGrid(width, height, snake, apple);
         const pathFind = new PathFind(snake, apple, grid);
         pathFind.paths = [
             [[7, 1], [5, 8], [1, 9]],
@@ -33,7 +33,7 @@ describe('findPath', () => {
 
     it('should resolve path', () => {
         const snake = [[2, 0], [2, 1], [2, 2]];
-        const grid = generateGrid(width, height, snake, apple);
+        const grid = Game.generateGrid(width, height, snake, apple);
         const pathFind = new PathFind(snake, apple, grid);
         const path = pathFind.solve();
 
@@ -43,15 +43,19 @@ describe('findPath', () => {
         );
     });
 
-    it.skip('should resolve other path', () => {
-        const snake = [[1, 9], [2, 9], [3, 9]];
-        const grid = generateGrid(10, 10, snake, apple);
+    it('should not resolve impossible path', () => {
+        const snake = [[1, 0], [1, 1], [1, 2], [1, 3], [1, 4], [0, 4]];
+        const grid = Game.generateGrid(width, height, snake, apple);
         const pathFind = new PathFind(snake, apple, grid);
         const path = pathFind.solve();
+        assert.equal(path, false);
+    });
 
-        assert.equal(
-            JSON.stringify(path),
-            JSON.stringify([[1, 2], [0, 2], [0, 3], [0, 4], [1, 4], [2, 4], [3, 4], [4, 4]])
-        );
+    it('should return neighbor cell', () => {
+        const snake = [[1, 0], [1, 1], [1, 2], [1, 3], [1, 4], [0, 4]];
+        const grid = Game.generateGrid(width, height, snake, apple);
+        const pathFind = new PathFind(snake, apple, grid);
+        const neighbor = pathFind.neighbor();
+        assert.equal(JSON.stringify(neighbor), JSON.stringify([[0, 3]]));
     });
 });

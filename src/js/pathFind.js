@@ -1,6 +1,5 @@
 import arrayGrid from 'array-grid';
-
-const WALL = 1;
+import Game from './game';
 
 class PathFind {
 
@@ -10,6 +9,7 @@ class PathFind {
         this.grid = grid;
 
         if (start.length > 1) {
+            this.snake = start;
             this.start = start[start.length - 1];
         }
     }
@@ -24,7 +24,7 @@ class PathFind {
         if (JSON.stringify(cell) === JSON.stringify(this.start)) {
             return false;
         }
-        return (this.grid[x][y] === WALL) || false;
+        return (this.grid[x][y] === Game.WALL) || false;
     }
 
     static neighbors(cell) {
@@ -60,11 +60,13 @@ class PathFind {
         this.wasHere = [];
         this.paths = [];
 
-        this.recursiveSolve(this.start);
-        const path = this.currentPath;
-        path.reverse();
+        if (this.recursiveSolve(this.start)) {
+            const path = this.currentPath;
+            path.reverse();
+            return path;
+        }
 
-        return path;
+        return false;
     }
 
     recursiveSolve(current) {
@@ -88,6 +90,19 @@ class PathFind {
             }
         }
 
+        return false;
+    }
+
+    neighbor() {
+        const current = this.start;
+        const neighbors = PathFind.neighbors(current);
+        for (let i = 0; i < neighbors.length; i++) {
+            const neighbor = neighbors[i];
+
+            if (!this.isCollide(neighbor)) {
+                return [neighbor];
+            }
+        }
         return false;
     }
 }

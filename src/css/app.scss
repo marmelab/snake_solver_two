@@ -1,3 +1,18 @@
+// Dark Theme
+$body-color: #1E1E1E;
+$text-color: white;
+$grid-color: #181818;
+$border-color: white;
+$apple-color: red;
+
+* {
+    color: $text-color;
+}
+
+body{
+    background-color: $body-color;
+}
+
 #app {
     margin: 100px auto 0 auto;
     width: 400px;
@@ -12,7 +27,7 @@
 
     div {
         @include cell;
-        background-color: white;
+        background-color: $grid-color;
     }
 
     .snake {
