@@ -1,11 +1,8 @@
 import React from 'react';
 
-class Cell extends React.Component {
-    render() {
-        return (
-            <div className="cell"></div>
-        );
-    }
-}
+const Cell = (props) => (<div className={props.type}></div>);
+Cell.propTypes = {
+    type: React.PropTypes.string,
+};
 
 export default Cell;

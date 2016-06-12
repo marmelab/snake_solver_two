@@ -8,6 +8,11 @@ Installation
 
 `make install`
 
+Tests
+---
+
+`make test`
+
 Run
 ---
 

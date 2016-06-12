@@ -1,10 +1,47 @@
-#grid{
-    margin-top: 100px;
-    text-align: center;
+// Dark Theme
+$body-color: #1E1E1E;
+$text-color: white;
+$grid-color: #181818;
+$border-color: white;
+$apple-color: red;
 
-    .cell {
+* {
+    color: $text-color;
+}
+
+body{
+    background-color: $body-color;
+}
+
+#app {
+    margin: 100px auto 0 auto;
+    width: 400px;
+}
+
+#grid{
+    @mixin cell {
         display: inline-block;
-        padding: 20px;
         outline: 1px solid grey;
+        padding: 20px;
+    }
+
+    div {
+        @include cell;
+        background-color: $grid-color;
+    }
+
+    .snake {
+        @include cell;
+        background-color: #00FF00;
+    }
+
+    .head {
+        @include cell;
+        background-color: #006400;
+    }
+
+    .apple {
+        @include cell;
+        background-color: red;
     }
 }
