@@ -37,15 +37,6 @@ class PathFind {
         ];
     }
 
-    isPathAlreadyTested(path) {
-        for (let i = 0; i < this.paths.length; i++) {
-            if (JSON.stringify(this.paths[i]) === JSON.stringify(path)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     isCellAlreadyTested(cell) {
         for (let i = 0; i < this.wasHere.length; i++) {
             if (JSON.stringify(this.wasHere[i]) === JSON.stringify(cell)) {
@@ -58,12 +49,10 @@ class PathFind {
     solve() {
         this.currentPath = [];
         this.wasHere = [];
-        this.paths = [];
 
         if (this.recursiveSolve(this.start)) {
-            const path = this.currentPath;
-            path.reverse();
-            return path;
+            this.currentPath.reverse();
+            return this.currentPath;
         }
 
         return false;
@@ -90,19 +79,6 @@ class PathFind {
             }
         }
 
-        return false;
-    }
-
-    neighbor() {
-        const current = this.start;
-        const neighbors = PathFind.neighbors(current);
-        for (let i = 0; i < neighbors.length; i++) {
-            const neighbor = neighbors[i];
-
-            if (!this.isCollide(neighbor)) {
-                return [neighbor];
-            }
-        }
         return false;
     }
 }

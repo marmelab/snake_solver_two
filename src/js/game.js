@@ -15,23 +15,53 @@ class Game {
         this.grid = Game.generateGrid(width, height, snake, apple);
     }
 
-    moveSnake() {
-        if (!this.actions.length) {
-            const pathFind = new PathFind(this.snake, this.apple, this.grid);
-            const path = pathFind.solve();
-            this.actions = path;
+    next() {
+        const pathToApple = this.pathToApple();
+        const newGame = this.clone();
+        newGame.virtualMove(pathToApple);
 
-            if (!path) {
-                this.actions = pathFind.neighbor();
-            }
-
-            if (!this.actions) {
-                console.error('No path found');
-            }
+        if (pathToApple.length && newGame.isPathToTailPossible()) {
+            return this.goToPath(pathToApple);
         }
 
-        this.snake.push(this.actions[0]);
+        const pathToTail = this.pathToTail();
+        return this.goToPath(pathToTail);
+    }
+
+    virtualMove(path) {
+        if (path.length) {
+            path.map(move => this.moveSnake(move));
+        }
+    }
+
+    goToPath(path) {
+        if (!this.actions.length) {
+            this.actions = path;
+        }
+
+        this.moveSnake(this.actions[0]);
         this.actions.shift();
+    }
+
+    pathToApple() {
+        const pathFind = new PathFind(this.snake, this.apple, this.grid);
+        return pathFind.solve();
+    }
+
+    pathToTail() {
+        const tail = this.snake[0];
+        const pathFind = new PathFind(this.snake, tail, this.grid);
+        return pathFind.solve();
+    }
+
+    isPathToTailPossible() {
+        const tail = this.snake[0];
+        const path = new PathFind(this.snake, tail, this.grid).solve();
+        return Boolean(path) || false;
+    }
+
+    moveSnake(move) {
+        this.snake.push(move);
 
         if (JSON.stringify(this.snake[this.snake.length - 1]) === JSON.stringify(this.apple)) {
             this.score++;
@@ -54,6 +84,16 @@ class Game {
             }
         }
         this.apple = positions[Math.floor(Math.random() * positions.length)];
+    }
+
+    clone() {
+        const copy = (variable) => {
+            return JSON.parse(JSON.stringify(variable));
+        };
+
+        const snake = copy(this.snake);
+        const apple = copy(this.apple);
+        return new Game(this.width, this.height, snake, apple);
     }
 
     static generateGrid(width, height, snake, apple) {

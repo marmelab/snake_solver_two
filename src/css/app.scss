@@ -3,7 +3,18 @@ $body-color: #1E1E1E;
 $text-color: white;
 $grid-color: #181818;
 $border-color: white;
-$apple-color: red;
+$snake-color: #00FF00;
+
+// White Theme
+// $body-color: white;
+// $text-color: black;
+// $grid-color: white;
+// $border-color: black;
+// $apple-color: red;
+// $snake-color: #00FF00;
+
+$apple-color: #FFFF00;
+$head-color: #006400;
 
 * {
     color: $text-color;
@@ -15,7 +26,7 @@ body{
 
 #app {
     margin: 100px auto 0 auto;
-    width: 400px;
+    width: 200px;
 }
 
 #grid{
@@ -32,16 +43,16 @@ body{
 
     .snake {
         @include cell;
-        background-color: #00FF00;
+        background-color: $snake-color;
     }
 
     .head {
         @include cell;
-        background-color: #006400;
+        background-color: $head-color;
     }
 
     .apple {
         @include cell;
-        background-color: red;
+        background-color: $apple-color;
     }
 }
