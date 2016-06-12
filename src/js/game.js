@@ -17,10 +17,8 @@ class Game {
 
     next() {
         const pathToApple = this.pathToApple();
-        const newGame = this.clone();
-        newGame.virtualMove(pathToApple);
 
-        if (pathToApple.length && newGame.isPathToTailPossible()) {
+        if (this.isPossiblePath(pathToApple)) {
             return this.goToPath(pathToApple);
         }
 
@@ -29,7 +27,7 @@ class Game {
     }
 
     virtualMove(path) {
-        if (path.length) {
+        if (Boolean(path)) {
             path.map(move => this.moveSnake(move));
         }
     }
@@ -44,14 +42,22 @@ class Game {
     }
 
     pathToApple() {
-        const pathFind = new PathFind(this.snake, this.apple, this.grid);
-        return pathFind.solve();
+        return new PathFind(this.snake, this.apple, this.grid).solve();
     }
 
     pathToTail() {
         const tail = this.snake[0];
-        const pathFind = new PathFind(this.snake, tail, this.grid);
-        return pathFind.solve();
+        return new PathFind(this.snake, tail, this.grid).solve();
+    }
+
+    isPossiblePath(path) {
+        if (!path) {
+            return false;
+        }
+
+        const newGame = this.clone();
+        newGame.virtualMove(path);
+        return newGame.isPathToTailPossible(path);
     }
 
     isPathToTailPossible() {

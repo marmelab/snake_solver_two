@@ -4,8 +4,7 @@ const EMPTY = 0;
 const WALL = 1;
 const APPLE = 2;
 
-const width = 5;
-const height = 5;
+const [width, height] = [5, 5];
 
 describe('game', () => {
     /*
