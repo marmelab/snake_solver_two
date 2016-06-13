@@ -4,11 +4,17 @@ import Game from '../js/game';
 
 const Grid = ({ width, height, snake, apple }) => {
     const grid = Game.generateGrid(width, height, snake, apple);
+    const head = snake[snake.length - 1];
     const cells = [];
 
     for (let x = 0; x < width; x++) {
         for (let y = 0; y < height; y++) {
             const cell = grid[x][y];
+
+            if (JSON.stringify([x, y]) === JSON.stringify(head)) {
+                cells.push(<Cell type="head" />);
+                continue;
+            }
 
             switch (cell) {
             case Game.WALL:
