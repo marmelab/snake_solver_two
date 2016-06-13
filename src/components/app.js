@@ -1,20 +1,20 @@
 import React from 'react';
 import ReactDom from 'react-dom';
 import Grid from './grid';
-import Game from '../js/game';
+import Game from '../game/game';
+import getNextMove from '../player/computer';
 
-const [width, height, speed] = [5, 5, 10];
-const snake = [[2, 0], [2, 1], [2, 2]];
-const apple = [4, 4];
-const game = new Game(width, height, snake, apple);
+const size = [5, 5];
+const speed = 1000;
+const game = new Game(size);
 
 class App extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            snake,
-            apple,
+            snake: game.getSnake(),
+            apple: game.getApple(),
         };
     }
 
@@ -23,27 +23,27 @@ class App extends React.Component {
     }
 
     tick() {
-        setTimeout(() => {
-            game.next();
-            this.setState({
-                snake: game.snake,
-                apple: game.apple,
-                score: game.score,
-            });
-            this.tick();
-        }, speed);
+        try {
+            setTimeout(() => {
+                const nextMove = getNextMove();
+                game.nextTick(nextMove);
+                this.setState({
+                    snake: game.getSnake(),
+                    apple: game.getApple(),
+                    score: game.score,
+                });
+                this.tick();
+            }, speed);
+        } catch (e) {
+            console.log('Finish !');
+        }
     }
 
     render() {
         return (
             <div>
                 <div className="score">Score: {this.state.score}</div>
-                <Grid
-                    width={width}
-                    height={height}
-                    snake={this.state.snake}
-                    apple={this.state.apple}
-                />
+                <Grid size={size} />
             </div>
         );
     }
