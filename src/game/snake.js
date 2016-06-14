@@ -13,14 +13,21 @@ export function isSnakeHeadAtPosition(snake, position) {
     return (JSON.stringify(head) === JSON.stringify(position)) || false;
 }
 
-export function isSnakeHeadOutsideBoundingBox(snake, grid) {
-    const head = snake[snake.length - 1];
-    const [xHead, yHead] = head;
-    if (grid[xHead][yHead] === 1) {
-        return false;
+export function isSnakeHeadOutsideBoundingBox(snake, size) {
+    const [width, height] = size;
+
+    for (let i = 0; i < snake.length; i++) {
+        const [xSnake, ySnake] = snake[i];
+        if (xSnake >= width || ySnake >= height) {
+            return true;
+        }
+
+        if (xSnake < 0 || ySnake < 0) {
+            return true;
+        }
     }
 
-    return true;
+    return false;
 }
 
 export function getHeadSnake(snake) {

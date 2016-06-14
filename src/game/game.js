@@ -1,4 +1,4 @@
-import initializeGrid from './initializeGrid';
+import { initializeGrid, updateGrid } from './grid';
 import findRandomApplePosition from './apple';
 import { moveSnakeHead, isSnakeHeadAtPosition, removeSnakeTail, isSnakeHeadOutsideBoundingBox } from './snake';
 
@@ -19,6 +19,8 @@ export default class Game {
         } else {
             this.snake = removeSnakeTail(newSnake);
         }
+
+        this.grid = updateGrid(this.grid, this.snake, this.apple);
 
         if (this.isLost()) {
             throw new Error('You lose :(');
@@ -42,15 +44,11 @@ export default class Game {
     }
 
     isLost() {
-        if (isSnakeHeadOutsideBoundingBox(this.snake, this.grid)) {
-            return false;
-        }
-
-        return true;
+        return isSnakeHeadOutsideBoundingBox(this.snake, this.size);
     }
 
     isWon() {
-        const finalScore = this.size.reduce((width, height) => width * height);
+        const finalScore = this.size[0] * this.size[1];
         if (this.snake.length === finalScore) {
             return true;
         }

@@ -13,8 +13,8 @@ class App extends React.Component {
         super(props);
 
         this.state = {
-            snake: game.getSnake(),
-            apple: game.getApple(),
+            grid: game.getGrid(),
+            score: game.score,
         };
     }
 
@@ -28,8 +28,7 @@ class App extends React.Component {
                 const nextMove = getNextMove();
                 game.nextTick(nextMove);
                 this.setState({
-                    snake: game.getSnake(),
-                    apple: game.getApple(),
+                    grid: game.getGrid(),
                     score: game.score,
                 });
                 this.tick();
@@ -43,7 +42,7 @@ class App extends React.Component {
         return (
             <div>
                 <div className="score">Score: {this.state.score}</div>
-                <Grid size={size} />
+                <Grid size={size} grid={this.state.grid} />
             </div>
         );
     }
