@@ -1,7 +1,7 @@
 import React from 'react';
 import Cell from './cell';
 
-const WALL = 1;
+const BLOCK = 1;
 const APPLE = 2;
 
 const Grid = ({ grid }) => {
@@ -14,7 +14,7 @@ const Grid = ({ grid }) => {
             const cell = grid[x][y];
 
             switch (cell) {
-            case WALL:
+            case BLOCK:
                 cells.push(<Cell type="snake" />);
                 break;
             case APPLE:

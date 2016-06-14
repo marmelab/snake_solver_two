@@ -7,7 +7,7 @@ export default class Game {
         this.size = size;
         this.grid = initializeGrid(size);
         this.snake = [[0, 0], [0, 1], [0, 2]];
-        this.apple = findRandomApplePosition(this.grid, this.snake);
+        this.apple = [4, 4];
         this.score = 0;
     }
 

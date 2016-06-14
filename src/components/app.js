@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDom from 'react-dom';
 import Grid from './grid';
 import Game from '../game/game';
-import getNextMove from '../player/computer';
+import { getNextMove } from '../player/computer';
 
 const size = [5, 5];
 const speed = 1000;

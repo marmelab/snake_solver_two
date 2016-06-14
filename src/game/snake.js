@@ -13,16 +13,10 @@ export function isSnakeHeadAtPosition(snake, position) {
     return (JSON.stringify(head) === JSON.stringify(position)) || false;
 }
 
-export function isCollide(cell, grid) {
+export function isCollide([xCell, yCell], grid) {
     const MAX_WIDTH = grid[0].length;
     const MAX_HEIGHT = grid.length;
-    const [xCell, yCell] = cell;
-
-    if (xCell >= MAX_WIDTH || yCell >= MAX_HEIGHT) {
-        return true;
-    }
-
-    if (xCell < 0 || yCell < 0) {
+    if (xCell >= MAX_WIDTH || yCell >= MAX_HEIGHT || xCell < 0 || yCell < 0) {
         return true;
     }
 
