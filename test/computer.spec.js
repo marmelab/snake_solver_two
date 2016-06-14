@@ -24,7 +24,7 @@ describe('computer', () => {
         [ 0, 0, 0, 0, 0 ]
         [ 0, 0, 0, 0, 0 ]
         [ 0, 0, 0, 0, 0 ]
-        [ 0, 0, 0, 0, 0 ]
+        [ 0, 0, 0, 0, 2 ]
     */
     it('should return next move', () => {
         const game = new Game([5, 5]);

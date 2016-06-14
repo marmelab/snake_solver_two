@@ -1,8 +1,7 @@
 const BLOCK = 1;
 const APPLE = 2;
 
-export function initializeGrid(size) {
-    const [width, height] = size;
+export function initializeGrid([width, height]) {
     return Array(height).fill(Array(width).fill(0));
 }
 
