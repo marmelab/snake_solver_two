@@ -25,7 +25,7 @@ class App extends React.Component {
     tick() {
         try {
             setTimeout(() => {
-                const nextMove = getNextMove();
+                const nextMove = getNextMove(game);
                 game.nextTick(nextMove);
                 this.setState({
                     grid: game.getGrid(),

@@ -13,18 +13,17 @@ export function isSnakeHeadAtPosition(snake, position) {
     return (JSON.stringify(head) === JSON.stringify(position)) || false;
 }
 
-export function isSnakeHeadOutsideBoundingBox(snake, size) {
-    const [width, height] = size;
+export function isCollide(cell, grid) {
+    const MAX_WIDTH = grid[0].length;
+    const MAX_HEIGHT = grid.length;
+    const [xCell, yCell] = cell;
 
-    for (let i = 0; i < snake.length; i++) {
-        const [xSnake, ySnake] = snake[i];
-        if (xSnake >= width || ySnake >= height) {
-            return true;
-        }
+    if (xCell >= MAX_WIDTH || yCell >= MAX_HEIGHT) {
+        return true;
+    }
 
-        if (xSnake < 0 || ySnake < 0) {
-            return true;
-        }
+    if (xCell < 0 || yCell < 0) {
+        return true;
     }
 
     return false;

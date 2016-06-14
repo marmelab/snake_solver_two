@@ -4,12 +4,13 @@ import Cell from './cell';
 const WALL = 1;
 const APPLE = 2;
 
-const Grid = ({ size, grid }) => {
-    const [width, height] = size;
+const Grid = ({ grid }) => {
+    const MAX_WIDTH = grid[0].length;
+    const MAX_HEIGHT = grid.length;
     const cells = [];
 
-    for (let x = 0; x < width; x++) {
-        for (let y = 0; y < height; y++) {
+    for (let x = 0; x < MAX_WIDTH; x++) {
+        for (let y = 0; y < MAX_HEIGHT; y++) {
             const cell = grid[x][y];
 
             switch (cell) {
@@ -29,7 +30,6 @@ const Grid = ({ size, grid }) => {
 };
 
 Grid.propTypes = {
-    size: React.PropTypes.array.isRequired,
     grid: React.PropTypes.array.isRequired,
 };
 
