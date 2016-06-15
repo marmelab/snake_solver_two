@@ -1,26 +1,23 @@
 import React from 'react';
 import Cell from './cell';
-import Game from '../js/game';
 
-const Grid = ({ width, height, snake, apple }) => {
-    const grid = Game.generateGrid(width, height, snake, apple);
-    const head = snake[snake.length - 1];
+const BLOCK = 1;
+const APPLE = 2;
+
+const Grid = ({ grid }) => {
+    const MAX_WIDTH = grid[0].length;
+    const MAX_HEIGHT = grid.length;
     const cells = [];
 
-    for (let x = 0; x < width; x++) {
-        for (let y = 0; y < height; y++) {
+    for (let x = 0; x < MAX_WIDTH; x++) {
+        for (let y = 0; y < MAX_HEIGHT; y++) {
             const cell = grid[x][y];
 
-            if (JSON.stringify([x, y]) === JSON.stringify(head)) {
-                cells.push(<Cell type="head" />);
-                continue;
-            }
-
             switch (cell) {
-            case Game.WALL:
+            case BLOCK:
                 cells.push(<Cell type="snake" />);
                 break;
-            case Game.APPLE:
+            case APPLE:
                 cells.push(<Cell type="apple" />);
                 break;
             default:
@@ -33,10 +30,7 @@ const Grid = ({ width, height, snake, apple }) => {
 };
 
 Grid.propTypes = {
-    width: React.PropTypes.number.isRequired,
-    height: React.PropTypes.number.isRequired,
-    snake: React.PropTypes.array.isRequired,
-    apple: React.PropTypes.array.isRequired,
+    grid: React.PropTypes.array.isRequired,
 };
 
 export default Grid;
