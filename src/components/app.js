@@ -4,7 +4,7 @@ import Grid from './grid';
 import Game from '../game/game';
 import { getNextMove } from '../player/computer';
 
-const size = [5, 5];
+const size = [10, 10];
 const speed = 100;
 const game = new Game(size);
 
