@@ -22,9 +22,9 @@ describe('computer', () => {
     /*
         [ 1, 1, 1, 0, 0 ]
         [ 0, 0, 0, 0, 0 ]
+        [ 0, 0, 2, 0, 0 ]
         [ 0, 0, 0, 0, 0 ]
         [ 0, 0, 0, 0, 0 ]
-        [ 0, 0, 0, 0, 2 ]
     */
     it('should return next move', () => {
         const game = new Game([5, 5]);
