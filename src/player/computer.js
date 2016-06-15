@@ -1,6 +1,6 @@
 import { moveSnakeHead, isSnakeHeadAtPosition, isCollide } from '../game/snake';
 
-const MAX_TICK = 2;
+const MAX_TICK = 5;
 const BLOCK = 1;
 
 export function getNeighbors([x, y]) {
@@ -26,12 +26,16 @@ export function getPossibleMoves(cell, grid) {
     });
 }
 
+// @FIXME: estimate freedom of movement
 export function getMoveScore(move, snake, apple, grid) {
     const newSnake = moveSnakeHead(snake, move);
     const headNewSnake = newSnake[newSnake.length - 1];
 
     if (isSnakeHeadAtPosition(newSnake, apple)) {
-        // @FIXME: estimate freedom of movement
+        if (!getPossibleMoves(apple, grid).length) {
+            return -1;
+        }
+
         return 1;
     }
 

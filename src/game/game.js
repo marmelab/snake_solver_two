@@ -14,6 +14,7 @@ export default class Game {
     nextTick(nextMove) {
         const newSnake = moveSnakeHead(this.snake, nextMove);
         if (isSnakeHeadAtPosition(newSnake, this.apple)) {
+            this.score++;
             this.snake = newSnake;
             this.apple = findRandomApplePosition(this.grid, this.snake);
         } else {
