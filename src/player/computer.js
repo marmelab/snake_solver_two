@@ -1,6 +1,7 @@
 import { moveSnakeHead, isSnakeHeadAtPosition, isCollide } from '../game/snake';
 
 const MAX_TICK = 2;
+const BLOCK = 1;
 
 export function getNeighbors([x, y]) {
     return [
@@ -18,7 +19,7 @@ export function getBestMove(movesScores) {
 
 export function getPossibleMoves(cell, grid) {
     return getNeighbors(cell).filter(([xNeighbor, yNeighbor]) => {
-        if (!isCollide([xNeighbor, yNeighbor], grid) && grid[xNeighbor][yNeighbor] === 0) {
+        if (!isCollide([xNeighbor, yNeighbor], grid) && grid[xNeighbor][yNeighbor] !== BLOCK) {
             return true;
         }
         return false;
@@ -47,11 +48,9 @@ export function getNextMove(game) {
 
     const head = snake[snake.length - 1];
     const possibleMoves = getPossibleMoves(head, grid);
-    const movesScores = [];
-
-    possibleMoves.forEach(move => {
+    const movesScores = possibleMoves.map(move => {
         const score = getMoveScore(move, snake, apple, grid);
-        movesScores.push({ moves: [move], score });
+        return { moves: [move], score };
     });
 
     for (let tick = 0; tick < MAX_TICK; tick++) {

@@ -5,7 +5,7 @@ import Game from '../game/game';
 import { getNextMove } from '../player/computer';
 
 const size = [5, 5];
-const speed = 1000;
+const speed = 100;
 const game = new Game(size);
 
 class App extends React.Component {

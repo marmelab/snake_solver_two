@@ -6,7 +6,7 @@ export default class Game {
     constructor(size) {
         this.size = size;
         this.snake = [[0, 0], [0, 1], [0, 2]];
-        this.apple = [2, 2];
+        this.apple = [0, 3];
         this.grid = initializeGrid(size, this.snake, this.apple);
         this.score = 0;
     }

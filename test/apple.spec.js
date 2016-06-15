@@ -10,9 +10,8 @@ describe('apple', () => {
     */
     it('should generate apple random position after eat', () => {
         const game = new Game([5, 5]);
-        const apple = [0, 3];
+        const apple = game.apple.slice();
 
-        game.apple = apple;
         game.nextTick([0, 3]);
 
         const newApple = game.getApple();
