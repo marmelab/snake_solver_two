@@ -1,5 +1,6 @@
 const BLOCK = 1;
 const APPLE = 2;
+const [UP, RIGHT, DOWN, LEFT] = [0, 1, 2, 3];
 
 export function initializeGrid([width, height], snake, [xApple, yApple]) {
     const grid = new Array(width);
@@ -22,10 +23,16 @@ export function initializeGrid([width, height], snake, [xApple, yApple]) {
 }
 
 export function getAdjacentCell(move, [x, y]) {
-    return [
-        [x - 1, y], // Up
-        [x, y + 1], // Right
-        [x + 1, y], // Down
-        [x, y - 1], // Left
-    ][move];
+    switch (move) {
+    case UP:
+        return [x - 1, y];
+    case RIGHT:
+        return [x, y + 1];
+    case DOWN:
+        return [x + 1, y];
+    case LEFT:
+        return [x, y - 1];
+    default:
+        return false;
+    }
 }

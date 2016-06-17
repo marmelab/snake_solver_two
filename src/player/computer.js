@@ -30,12 +30,12 @@ export function getPossibleMoves(cell, grid) {
     return possibleMove;
 }
 
-// @FIXME: estimate freedom of movement
 export function getMoveScore(move, snake, apple, grid) {
     const newSnake = moveSnakeHead(snake, move);
     const newSnakeHead = newSnake[newSnake.length - 1];
 
     if (isSnakeHeadAtPosition(newSnake, apple)) {
+        // @FIXME: estimate freedom of movement
         if (!getPossibleMoves(apple, grid).length) {
             return -1;
         }
@@ -49,7 +49,7 @@ export function getMoveScore(move, snake, apple, grid) {
     return 0;
 }
 
-// @FIXME: Add scores
+// @FIXME: Debug score
 export function getNextMove(game) {
     const snake = game.snake.slice();
     const grid = game.grid.slice();
