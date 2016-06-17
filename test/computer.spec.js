@@ -1,6 +1,8 @@
 import { getPossibleMoves, getNextMove } from '../src/player/computer';
-import { initializeGrid } from '../src/game/grid';
+import { initializeGrid, getAdjacentCell } from '../src/game/grid';
 import Game from '../src/game/game';
+
+const [UP, RIGHT, DOWN, LEFT] = [0, 1, 2, 3];
 
 describe('computer', () => {
     it('should return possible moves', () => {
@@ -15,22 +17,29 @@ describe('computer', () => {
         const head = snake[snake.length - 1];
         const possibleMoves = getPossibleMoves(head, grid);
         assert.equal(JSON.stringify(possibleMoves), JSON.stringify([
-            [0, 3],
-            [1, 2],
+            RIGHT,
+            DOWN,
         ]));
     });
 
+    it('should return adjacent cell', () => {
+        assert.equal(JSON.stringify(getAdjacentCell(UP, [1, 0])), JSON.stringify([0, 0]));
+        assert.equal(JSON.stringify(getAdjacentCell(RIGHT, [0, 0])), JSON.stringify([0, 1]));
+        assert.equal(JSON.stringify(getAdjacentCell(DOWN, [0, 0])), JSON.stringify([1, 0]));
+        assert.equal(JSON.stringify(getAdjacentCell(LEFT, [0, 1])), JSON.stringify([0, 0]));
+    });
+
     /*
-        [ 1, 1, 1, 0, 0 ]
+        [ 1, 1, 1, 2, 0 ]
         [ 0, 0, 0, 0, 0 ]
-        [ 0, 0, 2, 0, 0 ]
+        [ 0, 0, 0, 0, 0 ]
         [ 0, 0, 0, 0, 0 ]
         [ 0, 0, 0, 0, 0 ]
     */
     it('should return next move', () => {
         const game = new Game([5, 5]);
         const nextMove = getNextMove(game);
-        assert.equal(JSON.stringify(nextMove), JSON.stringify([0, 3]));
+        assert.equal(nextMove, RIGHT);
     });
 
     /*
@@ -47,7 +56,7 @@ describe('computer', () => {
         game.grid = initializeGrid(game.size, game.snake, game.apple);
 
         const nextMove = getNextMove(game);
-        assert.notEqual(JSON.stringify(nextMove), JSON.stringify([0, 4]));
+        assert.equal(nextMove, LEFT);
     });
 
     /*
@@ -64,7 +73,7 @@ describe('computer', () => {
         game.grid = initializeGrid(game.size, game.snake, game.apple);
 
         const nextMove = getNextMove(game);
-        assert.notEqual(JSON.stringify(nextMove), JSON.stringify([4, 4]));
+        assert.equal(nextMove, UP);
     });
 
     it.skip('should eat last apple when finish game', () => {

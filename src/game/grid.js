@@ -20,3 +20,12 @@ export function initializeGrid([width, height], snake, [xApple, yApple]) {
     // return Array(height).fill(Array(width).fill(0)); // @FIXME
     return grid;
 }
+
+export function getAdjacentCell(move, [x, y]) {
+    return [
+        [x - 1, y], // Up
+        [x, y + 1], // Right
+        [x + 1, y], // Down
+        [x, y - 1], // Left
+    ][move];
+}

@@ -16,7 +16,7 @@ export default class Game {
         if (isSnakeHeadAtPosition(newSnake, this.apple)) {
             this.score++;
             this.snake = newSnake;
-            this.apple = findRandomApplePosition(this.grid, this.snake);
+            this.apple = findRandomApplePosition(this.grid);
         } else {
             this.snake = removeSnakeTail(newSnake);
         }
