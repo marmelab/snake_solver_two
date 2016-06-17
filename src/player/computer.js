@@ -2,7 +2,7 @@ import { moveSnakeHead, removeSnakeTail, isSnakeHeadAtPosition, isCollide } from
 import { initializeGrid, getAdjacentCell } from '../game/grid';
 import findRandomApplePosition from '../game/apple';
 
-const MAX_TICK = 2;
+const MAX_TICK = 5;
 const BLOCK = 1;
 const [UP, RIGHT, DOWN, LEFT] = [0, 1, 2, 3];
 
@@ -53,13 +53,19 @@ export function getMoveScore(move, snake, apple, grid) {
 export function getNextMove(game) {
     const snake = game.snake.slice();
     const grid = game.grid.slice();
+    const apple = game.apple.slice();
 
     const head = snake[snake.length - 1];
     const possibleMoves = getPossibleMoves(head, grid);
-    const moves = possibleMoves.map(possibleMove => new Uint8Array([possibleMove]));
-    let scores = new Uint8Array([1, 0]);
+    let scores = new Uint8Array([]);
+    let moves = possibleMoves.map(possibleMove => {
+        scores = new Uint8Array([...scores, getMoveScore(possibleMove, snake, apple, grid)]);
+        return new Uint8Array([possibleMove]);
+    });
 
     for (let tick = 0; tick < MAX_TICK; tick++) {
+        const newMoves = [];
+        let newScores = new Uint8Array([]);
         moves.forEach(move => {
             let newApple = game.apple.slice();
             let newSnake = game.snake.slice();
@@ -77,10 +83,12 @@ export function getNextMove(game) {
 
             const newSnakeHead = newSnake[newSnake.length - 1];
             getPossibleMoves(newSnakeHead, newGrid).forEach(possibleMove => {
-                scores = new Uint8Array([...scores, getMoveScore(possibleMove, newSnake, newApple, newGrid)]);
-                moves.push(new Uint8Array([...move, possibleMove]));
+                newScores = new Uint8Array([...newScores, getMoveScore(possibleMove, newSnake, newApple, newGrid)]);
+                newMoves.push(new Uint8Array([...move, possibleMove]));
             });
         });
+        moves = newMoves;
+        scores = newScores;
     }
 
     return getBestMove(moves, scores);
