@@ -114,6 +114,25 @@ describe('computer', () => {
     });
 
     /*
+        [ 1, 1, 1, 1, 0 ]
+        [ 1, 1, 1, 2, 1 ]
+        [ 0, 1, 1, 0, 1 ]
+        [ 0, 1, 1, 0, 1 ]
+        [ 0, 0, 1, 1, 1 ]
+    */
+    // @TODO
+    it.skip('should return next move (6)', () => {
+        const game = new Game([5, 5]);
+        game.snake = [[0, 3], [0, 2], [0, 1], [0, 0], [1, 0], [1, 1], [1, 2], [2, 2], [2, 1], [3, 1], [3, 2],
+         [4, 2], [4, 3], [4, 4], [3, 4], [2, 4], [1, 4]];
+        game.apple = [1, 3];
+        game.grid = initializeGrid(game.size, game.snake, game.apple);
+
+        const nextMove = getNextMove(game);
+        assert.equal(nextMove, UP);
+    });
+
+    /*
         [ 0, 0, 0, 1, 2 ]
         [ 0, 0, 0, 1, 1 ]
         [ 0, 0, 0, 0, 1 ]
