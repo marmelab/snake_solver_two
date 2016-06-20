@@ -1,5 +1,6 @@
 import { moveSnakeHead, removeSnakeTail, isSnakeHeadAtPosition, isCollide } from '../game/snake';
 import { initializeGrid, getAdjacentCell } from '../game/grid';
+import findRandomApplePosition from '../game/apple';
 
 const MAX_TICK = 8;
 const BLOCK = 1;
@@ -30,22 +31,23 @@ export function getPossibleMoves(cell, grid) {
 }
 
 export function getMoveScore(move, snake, apple, grid, tick) {
-    const newSnake = moveSnakeHead(snake, move);
+    const newSnake = moveSnakeHead(snake.slice(), move);
     const newSnakeHead = newSnake[newSnake.length - 1];
 
     if (isSnakeHeadAtPosition(newSnake, apple)) {
         // @FIXME: estimate freedom of movement
         if (!getPossibleMoves(apple, grid).length) {
-            return -1;
+            return 0;
         }
 
         return (1 / tick) * 10;
     }
 
     if (isCollide(newSnakeHead, grid)) {
-        return -1;
+        return 0;
     }
-    return 0;
+
+    return 1;
 }
 
 // @FIXME: Debug score
@@ -68,13 +70,16 @@ export function getNextMove(game) {
         moves.forEach((move, index) => {
             let newSnake = game.snake.slice();
             let newGrid = game.grid.slice();
+            let newApple = game.apple.slice();
 
             move.forEach(m => {
                 newSnake = moveSnakeHead(newSnake, m);
-                if (!isSnakeHeadAtPosition(newSnake, apple)) {
+                if (isSnakeHeadAtPosition(newSnake, newApple)) {
+                    newApple = findRandomApplePosition(newGrid);
+                } else {
                     newSnake = removeSnakeTail(newSnake);
                 }
-                newGrid = initializeGrid(game.size, newSnake, apple);
+                newGrid = initializeGrid(game.size, newSnake, newApple);
             });
 
             const newSnakeHead = newSnake[newSnake.length - 1];

@@ -43,6 +43,23 @@ describe('computer', () => {
     });
 
     /*
+        [ 0, 0, 0, 0, 0 ]
+        [ 0, 0, 0, 0, 0 ]
+        [ 0, 1, 1, 0, 0 ]
+        [ 1, 1, 1, 0, 0 ]
+        [ 2, 0, 0, 0, 0 ]
+    */
+    it('should return next move (2)', () => {
+        const game = new Game([5, 5]);
+        game.snake = [[2, 1], [2, 2], [3, 2], [3, 1], [3, 0]];
+        game.apple = [4, 0];
+        game.grid = initializeGrid(game.size, game.snake, game.apple);
+
+        const nextMove = getNextMove(game);
+        assert.equal(nextMove, DOWN);
+    });
+
+    /*
         [ 0, 0, 0, 1, 2 ]
         [ 0, 0, 0, 1, 1 ]
         [ 0, 0, 0, 0, 1 ]
@@ -60,7 +77,7 @@ describe('computer', () => {
     });
 
     /*
-        [ 0, 0, 0, 0, 0 ]
+        [ 1, 1, 0, 0, 0 ]
         [ 1, 0, 0, 0, 0 ]
         [ 1, 0, 0, 0, 0 ]
         [ 1, 1, 1, 1, 1 ]
@@ -69,7 +86,7 @@ describe('computer', () => {
     it('should not enter in closed zone', () => {
         const game = new Game([5, 5]);
         game.apple = [4, 1];
-        game.snake = [[1, 0], [2, 0], [3, 0], [3, 1], [3, 2], [3, 3], [3, 4]];
+        game.snake = [[0, 1], [0, 0], [1, 0], [2, 0], [3, 0], [3, 1], [3, 2], [3, 3], [3, 4]];
         game.grid = initializeGrid(game.size, game.snake, game.apple);
 
         const nextMove = getNextMove(game);
