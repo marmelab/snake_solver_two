@@ -76,6 +76,7 @@ describe('computer', () => {
         assert.equal(nextMove, UP);
     });
 
+    // @TODO
     it.skip('should eat last apple when finish game', () => {
 
     });
