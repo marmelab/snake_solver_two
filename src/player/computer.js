@@ -34,16 +34,16 @@ export function getMoveScore(move, snake, apple, grid, tick) {
     const newSnake = moveSnakeHead(snake.slice(), move);
     const newSnakeHead = newSnake[newSnake.length - 1];
 
-    if (isSnakeHeadAtPosition(newSnake, apple)) {
+    if (isSnakeHeadAtPosition(newSnake, apple.slice())) {
         // @FIXME: estimate freedom of movement
-        if (!getPossibleMoves(apple, grid).length) {
+        if (!getPossibleMoves(apple.slice(), grid.slice()).length) {
             return 0;
         }
 
         return (1 / tick) * 10;
     }
 
-    if (isCollide(newSnakeHead, grid)) {
+    if (isCollide(newSnakeHead, grid.slice())) {
         return 0;
     }
 
@@ -75,7 +75,7 @@ export function getNextMove(game) {
             move.forEach(m => {
                 newSnake = moveSnakeHead(newSnake, m);
                 if (isSnakeHeadAtPosition(newSnake, newApple)) {
-                    newApple = findRandomApplePosition(newGrid);
+                    newApple = findRandomApplePosition(game.grid.slice());
                 } else {
                     newSnake = removeSnakeTail(newSnake);
                 }
