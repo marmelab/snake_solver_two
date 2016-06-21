@@ -9,14 +9,20 @@ const gridStyle = {
     height: 250,
 };
 
-const Grid = ({ grid }) => {
+const Grid = ({ grid, snake }) => {
     const MAX_WIDTH = grid[0].length;
     const MAX_HEIGHT = grid.length;
     const cells = [];
+    const snakeHead = snake[snake.length - 1];
 
     for (let x = 0; x < MAX_WIDTH; x++) {
         for (let y = 0; y < MAX_HEIGHT; y++) {
             const cell = grid[x][y];
+
+            if (JSON.stringify([x, y]) === JSON.stringify(snakeHead)) {
+                cells.push(<Cell type="head" />);
+                continue;
+            }
 
             switch (cell) {
             case BLOCK:
@@ -36,6 +42,7 @@ const Grid = ({ grid }) => {
 
 Grid.propTypes = {
     grid: React.PropTypes.array.isRequired,
+    snake: React.PropTypes.array.isRequired,
 };
 
 export default Grid;

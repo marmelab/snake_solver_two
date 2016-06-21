@@ -8,6 +8,7 @@ export default class Game {
         this.snake = [[0, 0], [0, 1], [0, 2]];
         this.apple = [0, 3];
         this.grid = initializeGrid(size, this.snake, this.apple);
+        this.finalScore = this.size[0] * this.size[1];
         this.score = 0;
     }
 
@@ -21,8 +22,6 @@ export default class Game {
             this.snake = removeSnakeTail(newSnake);
         }
 
-        this.grid = initializeGrid(this.size, this.snake, this.apple);
-
         if (this.isLost()) {
             throw new Error('You lose :(');
         }
@@ -30,6 +29,8 @@ export default class Game {
         if (this.isWon()) {
             throw new Error('You win !');
         }
+
+        this.grid = initializeGrid(this.size, this.snake, this.apple);
     }
 
     getSnake() {
@@ -50,10 +51,6 @@ export default class Game {
     }
 
     isWon() {
-        const finalScore = this.size[0] * this.size[1];
-        if (this.snake.length === finalScore) {
-            return true;
-        }
-        return false;
+        return (this.snake.length === this.finalScore);
     }
 }

@@ -16,7 +16,9 @@ export function initializeGrid([width, height], snake, [xApple, yApple]) {
         grid[xSnake][ySnake] = BLOCK;
     });
 
-    grid[xApple][yApple] = APPLE;
+    if (!isNaN(xApple) && !isNaN(yApple)) {
+        grid[xApple][yApple] = APPLE;
+    }
 
     // return Array(height).fill(Array(width).fill(0)); // @FIXME
     return grid;
