@@ -1,5 +1,9 @@
+import { getAdjacentCell } from './grid';
+
 export function moveSnakeHead(snake, nextMove) {
-    snake.push(nextMove);
+    const head = snake[snake.length - 1];
+    const newHead = getAdjacentCell(nextMove, head);
+    snake.push(newHead);
     return snake;
 }
 

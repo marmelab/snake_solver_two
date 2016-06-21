@@ -1,26 +1,27 @@
-import { initializeGrid, updateGrid } from './grid';
+import { initializeGrid } from './grid';
 import findRandomApplePosition from './apple';
 import { moveSnakeHead, isSnakeHeadAtPosition, removeSnakeTail, isCollide } from './snake';
 
 export default class Game {
     constructor(size) {
         this.size = size;
-        this.grid = initializeGrid(size);
         this.snake = [[0, 0], [0, 1], [0, 2]];
-        this.apple = [4, 4];
+        this.apple = [0, 3];
+        this.grid = initializeGrid(size, this.snake, this.apple);
         this.score = 0;
     }
 
     nextTick(nextMove) {
         const newSnake = moveSnakeHead(this.snake, nextMove);
         if (isSnakeHeadAtPosition(newSnake, this.apple)) {
+            this.score++;
             this.snake = newSnake;
-            this.apple = findRandomApplePosition(this.grid, this.snake);
+            this.apple = findRandomApplePosition(this.grid);
         } else {
             this.snake = removeSnakeTail(newSnake);
         }
 
-        this.grid = updateGrid(this.grid, this.snake, this.apple);
+        this.grid = initializeGrid(this.size, this.snake, this.apple);
 
         if (this.isLost()) {
             throw new Error('You lose :(');
