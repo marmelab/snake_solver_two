@@ -81,7 +81,7 @@ export function getNextMove(game) {
     const grid = game.grid.slice();
     const apple = game.apple.slice();
 
-    if (snake.length === game.finalScore - 1) {
+    if (snake.length === game.surface - 1) {
         const lastMove = getLastMove(snake, apple);
         if (lastMove) {
             return lastMove;

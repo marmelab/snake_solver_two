@@ -4,11 +4,12 @@ import { moveSnakeHead, isSnakeHeadAtPosition, removeSnakeTail, isCollide } from
 
 export default class Game {
     constructor(size) {
+        const [x, y] = size;
         this.size = size;
         this.snake = [[0, 0], [0, 1], [0, 2]];
         this.apple = [0, 3];
         this.grid = initializeGrid(size, this.snake, this.apple);
-        this.finalScore = this.size[0] * this.size[1];
+        this.surface = x * y;
         this.score = 0;
     }
 
@@ -51,6 +52,6 @@ export default class Game {
     }
 
     isWon() {
-        return (this.snake.length === this.finalScore);
+        return this.snake.length === this.surface;
     }
 }
