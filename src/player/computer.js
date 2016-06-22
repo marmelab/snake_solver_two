@@ -1,5 +1,6 @@
 import { moveSnakeHead, removeSnakeTail, isSnakeHeadAtPosition, isCollide } from '../game/snake';
 import { initializeGrid, getAdjacentCell } from '../game/grid';
+import { isEqual } from '../js/utils';
 
 const MAX_TICK = 8;
 const BLOCK = 1;
@@ -24,7 +25,7 @@ export function getSnakePossibleMoves(snake, grid) {
     const possibleMove = [];
     [UP, RIGHT, DOWN, LEFT].forEach(move => {
         const [xNeighbor, yNeighbor] = getAdjacentCell(move, snakeHead);
-        if (JSON.stringify([xNeighbor, yNeighbor]) === JSON.stringify(snakeTail) ||
+        if (isEqual([xNeighbor, yNeighbor], snakeTail) ||
             (!isCollide([xNeighbor, yNeighbor], grid) && grid[xNeighbor][yNeighbor] !== BLOCK)) {
             possibleMove.push(move);
         }
@@ -69,7 +70,7 @@ export function getLastMove(snake, apple) {
     const snakeHead = snake[snake.length - 1];
     return [UP, RIGHT, DOWN, LEFT].filter(move => {
         const [xNeighbor, yNeighbor] = getAdjacentCell(move, snakeHead);
-        if (JSON.stringify([xNeighbor, yNeighbor]) === JSON.stringify(apple)) {
+        if (isEqual([xNeighbor, yNeighbor], apple)) {
             return true;
         }
         return false;

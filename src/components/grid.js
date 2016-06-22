@@ -1,5 +1,6 @@
 import React from 'react';
 import Cell from './cell';
+import { isEqual } from '../js/utils';
 
 const BLOCK = 1;
 const APPLE = 2;
@@ -19,7 +20,7 @@ const Grid = ({ grid, snake }) => {
         for (let y = 0; y < MAX_HEIGHT; y++) {
             const cell = grid[x][y];
 
-            if (JSON.stringify([x, y]) === JSON.stringify(snakeHead)) {
+            if (isEqual([x, y], snakeHead)) {
                 cells.push(<Cell type="head" />);
                 continue;
             }
