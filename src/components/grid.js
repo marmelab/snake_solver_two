@@ -4,6 +4,11 @@ import Cell from './cell';
 const BLOCK = 1;
 const APPLE = 2;
 
+const gridStyle = {
+    width: 250,
+    height: 250,
+};
+
 const Grid = ({ grid }) => {
     const MAX_WIDTH = grid[0].length;
     const MAX_HEIGHT = grid.length;
@@ -26,7 +31,7 @@ const Grid = ({ grid }) => {
         }
     }
 
-    return <div id="grid">{cells}</div>;
+    return <div id="grid" style={gridStyle}>{cells}</div>;
 };
 
 Grid.propTypes = {

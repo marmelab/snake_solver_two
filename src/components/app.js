@@ -3,10 +3,9 @@ import ReactDom from 'react-dom';
 import Grid from './grid';
 import Game from '../game/game';
 import { getNextMove } from '../player/computer';
+import * as config from '../js/config';
 
-const size = [5, 5];
-const speed = 100;
-const game = new Game(size);
+const game = new Game(config.size);
 
 class App extends React.Component {
     constructor(props) {
@@ -23,8 +22,8 @@ class App extends React.Component {
     }
 
     tick() {
-        try {
-            setTimeout(() => {
+        setTimeout(() => {
+            try {
                 const nextMove = getNextMove(game);
                 game.nextTick(nextMove);
                 this.setState({
@@ -32,17 +31,18 @@ class App extends React.Component {
                     score: game.score,
                 });
                 this.tick();
-            }, speed);
-        } catch (e) {
-            console.log('Finish !');
-        }
+            } catch (e) {
+                console.log(e.message);
+                console.log('Finish !');
+            }
+        }, config.speed);
     }
 
     render() {
         return (
             <div>
                 <div className="score">Score: {this.state.score}</div>
-                <Grid size={size} grid={this.state.grid} />
+                <Grid grid={this.state.grid} />
             </div>
         );
     }
