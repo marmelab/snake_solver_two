@@ -15,15 +15,17 @@ body{
 }
 
 #app {
-    margin: 100px auto 0 auto;
-    width: 200px;
+    margin-top: 50px;
+    text-align: center;
 }
 
 #grid{
+    display: flex;
+    flex-wrap: wrap;
+    margin: auto;
+
     @mixin cell {
-        display: inline-block;
         outline: 1px solid grey;
-        padding: 20px;
     }
 
     div {
