@@ -14,6 +14,7 @@ class App extends React.Component {
         this.state = {
             grid: game.getGrid(),
             score: game.score,
+            snake: game.snake,
         };
     }
 
@@ -29,6 +30,7 @@ class App extends React.Component {
                 this.setState({
                     grid: game.getGrid(),
                     score: game.score,
+                    snake: game.snake,
                 });
                 this.tick();
             } catch (e) {
@@ -42,7 +44,7 @@ class App extends React.Component {
         return (
             <div>
                 <div className="score">Score: {this.state.score}</div>
-                <Grid grid={this.state.grid} />
+                <Grid grid={this.state.grid} snake={this.state.snake} />
             </div>
         );
     }
