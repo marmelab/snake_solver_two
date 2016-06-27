@@ -26,6 +26,7 @@ body{
 
     @mixin cell {
         outline: 1px solid grey;
+        position: relative;
     }
 
     div {
@@ -33,84 +34,87 @@ body{
         background-color: $grid-color;
     }
 
-    @mixin snake-default {
+    .snake {
         @include cell;
         background-color: $snake-color;
-        position: relative;
 
-        &::before {
+        @mixin before {
             content: '';
             position: absolute;
             height: 25px;
-            border: 1px solid black;
+            outline: 1px solid black;
         }
 
-        &::after {
+        @mixin after {
             content: '';
             position: absolute;
             left: 50%;
             top: 50%;
-            display: block;
             width: 25px;
-            border: 1px solid black;
+            outline: 1px solid black;
         }
-    }
 
-    .up_left {
-        @include snake-default;
-        transform: rotate(-90deg);
-    }
-
-    .up_right {
-        @include snake-default;
-        transform: rotate(0deg);
-    }
-
-    .down_right {
-        @include snake-default;
-        transform: rotate(90deg);
-    }
-
-    .down_left {
-        @include snake-default;
-        transform: rotate(180deg);
-    }
-
-    .horizontal {
-        @include cell;
-        background-color: $snake-color;
-        position: relative;
-
-        &::before {
-            content: '';
-            position: absolute;
-            background-color: black;
-            left: 0%;
-            top: 50%;
-            height: 2px;
-            width: 50px;
+        &.horizontal {
+            &::before {
+                content: '';
+                position: absolute;
+                left: 0%;
+                top: 50%;
+                outline: 1px solid black;
+                width: 50px;
+            }
         }
-    }
 
-    .vertical {
-        @include cell;
-        background-color: $snake-color;
-        position: relative;
-
-        &::before {
-            content: '';
-            position: absolute;
-            background-color: black;
-            left: 50%;
-            top: 0%;
-            height: 50px;
-            width: 2px;
+        &.vertical {
+            &::before {
+                content: '';
+                position: absolute;
+                left: 50%;
+                top: 0%;
+                height: 50px;
+                outline: 1px solid black;
+            }
         }
-    }
 
-    .head {
-        @include cell;
-        background-color: $head-color;
+        &.up_left {
+            transform: rotate(-90deg);
+            &::before {
+                @include before;
+            }
+            &::after {
+                @include after;
+            }
+        }
+
+        &.up_right {
+            transform: rotate(0deg);
+            &::before {
+                @include before;
+            }
+            &::after {
+                @include after;
+            }
+        }
+
+        &.down_right {
+            transform: rotate(90deg);
+            &::before {
+                @include before;
+            }
+            &::after {
+                @include after;
+            }
+        }
+
+        &.down_left {
+            transform: rotate(180deg);
+            &::before {
+                @include before;
+            }
+            &::after {
+                @include after;
+            }
+        }
     }
 
     .apple {

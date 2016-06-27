@@ -23,7 +23,7 @@ const Grid = ({ grid, snake }) => {
             snake.forEach((snakeBlock, index) => {
                 if (isEqual(snakeBlock, [x, y])) {
                     const block = getBlock(snake, index);
-                    cells.push(<Cell type={block} />);
+                    cells.push(<Cell type={`snake ${block}`} />);
                 }
             });
 
@@ -34,7 +34,7 @@ const Grid = ({ grid, snake }) => {
                 cells.push(<Cell type="apple" />);
                 break;
             default:
-                cells.push(<Cell />);
+                cells.push(<Cell type="empty" />);
             }
         }
     }
