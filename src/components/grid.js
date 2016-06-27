@@ -1,5 +1,6 @@
 import React from 'react';
 import Cell from './cell';
+import { getBlock } from '../game/snake';
 import { isEqual } from '../js/utils';
 
 const BLOCK = 1;
@@ -14,20 +15,20 @@ const Grid = ({ grid, snake }) => {
     const MAX_WIDTH = grid[0].length;
     const MAX_HEIGHT = grid.length;
     const cells = [];
-    const snakeHead = snake[snake.length - 1];
 
     for (let x = 0; x < MAX_WIDTH; x++) {
         for (let y = 0; y < MAX_HEIGHT; y++) {
             const cell = grid[x][y];
 
-            if (isEqual([x, y], snakeHead)) {
-                cells.push(<Cell type="head" />);
-                continue;
-            }
+            snake.forEach((snakeBlock, index) => {
+                if (isEqual(snakeBlock, [x, y])) {
+                    const block = getBlock(snake, index);
+                    cells.push(<Cell type={block} />);
+                }
+            });
 
             switch (cell) {
             case BLOCK:
-                cells.push(<Cell type="snake" />);
                 break;
             case APPLE:
                 cells.push(<Cell type="apple" />);
