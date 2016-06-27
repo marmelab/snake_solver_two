@@ -41,7 +41,7 @@ body{
         @mixin before {
             content: '';
             position: absolute;
-            height: 25px;
+            height: 50%;
             outline: 1px solid black;
         }
 
@@ -50,8 +50,30 @@ body{
             position: absolute;
             left: 50%;
             top: 50%;
-            width: 25px;
+            width: 50%;
             outline: 1px solid black;
+        }
+
+        &.vertical_tail_down {
+            &::before {
+                content: '';
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                outline: 1px solid black;
+                height: 50%;
+            }
+        }
+
+        &.horizontal_head_right {
+            &::before {
+                content: '';
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                outline: 1px solid black;
+                width: 50px;
+            }
         }
 
         &.horizontal {

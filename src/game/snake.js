@@ -48,20 +48,32 @@ export function getBlock(snake, index) {
     const nextPosition = getDirection(snake[index], snake[index + 1]);
 
     if (index === 0) {
-        if (nextPosition === RIGHT || nextPosition === LEFT) {
-            return 'horizontal_tail';
+        if (nextPosition === LEFT) {
+            return 'horizontal_tail_left';
         }
-        if (nextPosition === UP || nextPosition === DOWN) {
-            return 'vertical_tail';
+        if (nextPosition === RIGHT) {
+            return 'horizontal_tail_right';
+        }
+        if (nextPosition === UP) {
+            return 'vertical_tail_up';
+        }
+        if (nextPosition === DOWN) {
+            return 'vertical_tail_down';
         }
     }
 
     if (index === snake.length - 1) {
-        if (prevPosition === RIGHT || prevPosition === LEFT) {
-            return 'horizontal_head';
+        if (prevPosition === LEFT) {
+            return 'horizontal_head_left';
         }
-        if (prevPosition === UP || prevPosition === DOWN) {
-            return 'vertical_head';
+        if (prevPosition === RIGHT) {
+            return 'horizontal_head_right';
+        }
+        if (prevPosition === UP) {
+            return 'vertical_head_up';
+        }
+        if (prevPosition === DOWN) {
+            return 'vertical_head_down';
         }
     }
 
