@@ -31,6 +31,7 @@ body{
     div {
         @include cell;
         background-color: $body-color;
+        background-size: cover;
     }
 
     .snake {
@@ -58,24 +59,24 @@ body{
 
         &.vertical_tail_down {
             background-image: url('../images/line.png');
-            background-position: 25px;
+            background-position: 10px;
             transform: rotate(90deg);
         }
 
         &.horizontal_tail_right {
             background-image: url('../images/line.png');
-            background-position: 25px;
+            background-position: 10px;
         }
 
         &.vertical_tail_up {
             background-image: url('../images/line.png');
-            background-position: 25px;
+            background-position: 10px;
             transform: rotate(-90deg);
         }
 
         &.horizontal_tail_left {
             background-image: url('../images/line.png');
-            background-position: 25px;
+            background-position: 10px;
             transform: rotate(180deg);
         }
 
@@ -113,5 +114,6 @@ body{
         background-image: url('../images/apple.png');
         background-position: center center;
         background-repeat: no-repeat;
+        background-size: 80%;
     }
 }
