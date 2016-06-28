@@ -1,6 +1,5 @@
 $body-color: #1E1E1E;
 $text-color: white;
-$grid-color: #181818;
 $border-color: white;
 $snake-color: #00FF00;
 $apple-color: #FFFF00;
@@ -23,7 +22,6 @@ body{
     display: flex;
     flex-wrap: wrap;
     margin: auto;
-    background-color: $grid-color;
 
     @mixin cell {
         outline: 1px solid grey;
@@ -32,12 +30,11 @@ body{
 
     div {
         @include cell;
-        background-color: $grid-color;
+        background-color: $body-color;
     }
 
     .snake {
         @include cell;
-        background-color: $grid-color;
         background-repeat: no-repeat;
 
         &.vertical_head_up {

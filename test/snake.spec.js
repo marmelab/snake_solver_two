@@ -34,34 +34,36 @@ describe('snake', () => {
         assert.equal(JSON.stringify(game.grid[0][0]), 0);
     });
 
-    /*
+    describe('blocks', () => {
+        /*
         [ 1, 0, 1, 1, 0 ]
         [ 1, 0, 0, 1, 0 ]
         [ 1, 0, 1, 1, 0 ]
         [ 1, 1, 1, 0, 0 ]
         [ 0, 0, 0, 0, 0 ]
-    */
-    it('should return blocks of snake', () => {
-        const snake = [[0, 0], [1, 0], [2, 0], [3, 0], [3, 1], [3, 2], [2, 2], [2, 3], [1, 3], [0, 3], [0, 2]];
-        const blocks = getBlocks(snake);
+        */
+        it('should return blocks of snake', () => {
+            const snake = [[0, 0], [1, 0], [2, 0], [3, 0], [3, 1], [3, 2], [2, 2], [2, 3], [1, 3], [0, 3], [0, 2]];
+            const blocks = getBlocks(snake);
 
-        assert.equal(JSON.stringify(blocks), JSON.stringify([
-            'vertical_tail', 'vertical', 'vertical', 'up_right', 'horizontal', 'up_left',
-            'down_right', 'up_left', 'vertical', 'down_left', 'horizontal_head',
-        ]));
-    });
+            assert.equal(JSON.stringify(blocks), JSON.stringify([
+                'vertical_tail', 'vertical', 'vertical', 'up_right', 'horizontal', 'up_left',
+                'down_right', 'up_left', 'vertical', 'down_left', 'horizontal_head',
+            ]));
+        });
 
-    /*
+        /*
         [ 1, 0, 1, 1, 0 ]
         [ 1, 0, 0, 1, 0 ]
         [ 1, 0, 1, 1, 0 ]
         [ 1, 1, 1, 0, 0 ]
         [ 0, 0, 0, 0, 0 ]
-    */
-    it('should return block of snake', () => {
-        const snake = [[0, 0], [1, 0], [2, 0], [3, 0], [3, 1], [3, 2], [2, 2], [2, 3], [1, 3], [0, 3], [0, 2]];
-        const block = getBlock(snake, 2);
+        */
+        it('should return block of snake', () => {
+            const snake = [[0, 0], [1, 0], [2, 0], [3, 0], [3, 1], [3, 2], [2, 2], [2, 3], [1, 3], [0, 3], [0, 2]];
+            const block = getBlock(snake, 2);
 
-        assert.equal(block, 'vertical');
+            assert.equal(block, 'vertical');
+        });
     });
 });

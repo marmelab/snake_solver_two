@@ -35,12 +35,7 @@ export function isCollide([xCell, yCell], grid) {
 }
 
 export function getDirection(position, target) {
-    return [UP, RIGHT, DOWN, LEFT].filter(move => {
-        if (JSON.stringify(target) === JSON.stringify(getAdjacentCell(move, position))) {
-            return true;
-        }
-        return false;
-    })[0];
+    return [UP, RIGHT, DOWN, LEFT].filter(move => (isEqual(target, getAdjacentCell(move, position))))[0];
 }
 
 export function getBlock(snake, index) {
