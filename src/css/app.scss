@@ -42,66 +42,58 @@ body{
 
         &.vertical_head_up {
             background-image: url('../images/snake.png');
-            background-position: center center;
-            transform: rotate(270deg);
-            background-position: center -1px;
+            transform: rotate(-90deg);
         }
 
         &.vertical_head_down {
             background-image: url('../images/snake.png');
-            background-position: center center;
             transform: rotate(90deg);
         }
 
         &.horizontal_head_left {
             background-image: url('../images/snake.png');
-            background-position: center -1px;
             transform: rotate(180deg);
         }
 
         &.horizontal_head_right {
             background-image: url('../images/snake.png');
-            background-position: center center;
         }
 
         &.vertical_tail_down {
             background-image: url('../images/line.png');
-            background-position: 25px 1px;
+            background-position: 25px;
             transform: rotate(90deg);
         }
 
         &.horizontal_tail_right {
             background-image: url('../images/line.png');
-            background-position: 25px center;
+            background-position: 25px;
         }
 
         &.vertical_tail_up {
             background-image: url('../images/line.png');
-            background-position: 25px center;
+            background-position: 25px;
             transform: rotate(-90deg);
         }
 
         &.horizontal_tail_left {
             background-image: url('../images/line.png');
-            background-position: 25px center;
+            background-position: 25px;
             transform: rotate(180deg);
         }
 
         &.horizontal {
             background-image: url('../images/line.png');
-            background-position: center 1px;
         }
 
         &.vertical {
             background-image: url('../images/line.png');
-            background-position: center 1px;
             transform: rotate(90deg);
         }
 
         &.up_left {
             background-image: url('../images/square.png');
-            transform: rotate(270deg);
-            background-position: 0px -1px;
+            transform: rotate(-90deg);
         }
 
         &.up_right {
@@ -111,13 +103,11 @@ body{
         &.down_right {
             background-image: url('../images/square.png');
             transform: rotate(90deg);
-            background-position: 1px 0px;
         }
 
         &.down_left {
             background-image: url('../images/square.png');
             transform: rotate(180deg);
-            background-position: 1px -1px;
         }
     }
 
