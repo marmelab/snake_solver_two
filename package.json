@@ -12,6 +12,7 @@
     "chai": "^3.5.0",
     "co": "^4.6.0",
     "co-mocha": "^1.1.2",
+    "config": "^1.21.0",
     "css-loader": "^0.23.1",
     "cssnext-loader": "^1.0.1",
     "eslint": "^2.5.3",

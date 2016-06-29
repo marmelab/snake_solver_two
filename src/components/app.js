@@ -3,9 +3,8 @@ import ReactDom from 'react-dom';
 import Grid from './grid';
 import Game from '../game/game';
 import { getNextMove } from '../player/computer';
-import * as config from '../js/config';
 
-const game = new Game(config.size);
+const game = new Game([CONFIG.width, CONFIG.height]);
 
 class App extends React.Component {
     constructor(props) {
@@ -37,7 +36,7 @@ class App extends React.Component {
                 console.log(e.message);
                 console.log('Finish !');
             }
-        }, config.speed);
+        }, CONFIG.speed);
     }
 
     render() {

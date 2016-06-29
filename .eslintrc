@@ -15,6 +15,7 @@
       "it",
       "coCb",
       "assert",
-      "beforeEach"
+      "beforeEach",
+      "CONFIG"
   }
 }
