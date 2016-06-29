@@ -15,7 +15,7 @@ describe('computer', () => {
         ];
         const snake = [[0, 0], [0, 1], [0, 2]];
         const head = snake[snake.length - 1];
-        const possibleMoves = getPossibleMoves(head, grid);
+        const possibleMoves = getPossibleMoves(head, grid, snake);
         assert.equal(JSON.stringify(possibleMoves), JSON.stringify([
             RIGHT,
             DOWN,
