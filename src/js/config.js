@@ -1,3 +1,4 @@
+export const maxTick = 8;
 export const width = 5;
 export const height = 5;
 export const size = [width, height];

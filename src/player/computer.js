@@ -1,8 +1,8 @@
 import { moveSnakeHead, removeSnakeTail, isSnakeHeadAtPosition, isCollide } from '../game/snake';
 import { initializeGrid, getAdjacentCell } from '../game/grid';
+import { maxTick } from '../js/config';
 import { isEqual } from '../js/utils';
 
-const MAX_TICK = 8;
 const BLOCK = 1;
 const [UP, RIGHT, DOWN, LEFT] = [0, 1, 2, 3];
 
@@ -96,7 +96,7 @@ export function getNextMove(game) {
         return new Uint8Array([possibleMove]);
     });
 
-    for (let tick = 1; tick <= MAX_TICK; tick++) {
+    for (let tick = 1; tick <= maxTick; tick++) {
         const newMoves = [];
         let newScores = new Uint8Array([]);
         moves.forEach((move, index) => {
