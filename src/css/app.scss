@@ -1,6 +1,5 @@
 $body-color: #1E1E1E;
 $text-color: white;
-$grid-color: #181818;
 $border-color: white;
 $snake-color: #00FF00;
 $apple-color: #FFFF00;
@@ -26,25 +25,95 @@ body{
 
     @mixin cell {
         outline: 1px solid grey;
+        position: relative;
     }
 
     div {
         @include cell;
-        background-color: $grid-color;
+        background-color: $body-color;
+        background-size: cover;
     }
 
     .snake {
         @include cell;
-        background-color: $snake-color;
-    }
+        background-repeat: no-repeat;
 
-    .head {
-        @include cell;
-        background-color: $head-color;
+        &.vertical_head_up {
+            background-image: url('../images/snake.png');
+            transform: rotate(-90deg);
+        }
+
+        &.vertical_head_down {
+            background-image: url('../images/snake.png');
+            transform: rotate(90deg);
+        }
+
+        &.horizontal_head_left {
+            background-image: url('../images/snake.png');
+            transform: rotate(180deg);
+        }
+
+        &.horizontal_head_right {
+            background-image: url('../images/snake.png');
+        }
+
+        &.vertical_tail_down {
+            background-image: url('../images/line.png');
+            background-position: 10px;
+            transform: rotate(90deg);
+        }
+
+        &.horizontal_tail_right {
+            background-image: url('../images/line.png');
+            background-position: 10px;
+        }
+
+        &.vertical_tail_up {
+            background-image: url('../images/line.png');
+            background-position: 10px;
+            transform: rotate(-90deg);
+        }
+
+        &.horizontal_tail_left {
+            background-image: url('../images/line.png');
+            background-position: 10px;
+            transform: rotate(180deg);
+        }
+
+        &.horizontal {
+            background-image: url('../images/line.png');
+        }
+
+        &.vertical {
+            background-image: url('../images/line.png');
+            transform: rotate(90deg);
+        }
+
+        &.up_left {
+            background-image: url('../images/square.png');
+            transform: rotate(-90deg);
+        }
+
+        &.up_right {
+            background-image: url('../images/square.png');
+        }
+
+        &.down_right {
+            background-image: url('../images/square.png');
+            transform: rotate(90deg);
+        }
+
+        &.down_left {
+            background-image: url('../images/square.png');
+            transform: rotate(180deg);
+        }
     }
 
     .apple {
         @include cell;
-        background-color: $apple-color;
+        background-image: url('../images/apple.png');
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: 80%;
     }
 }
