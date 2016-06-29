@@ -15,7 +15,7 @@ export function getBestMove(moves, scores) {
     });
 
     scoresSelected.sort((scoreA, scoreB) => scoreB.score - scoreA.score);
-    return scoresSelected.shift().move[0];
+    return scoresSelected.shift().move;
 }
 
 export function getPossibleMoves(cell, grid, snake) {
@@ -64,7 +64,7 @@ export function getLastMove(snake, apple) {
     })[0];
 }
 
-export function getNextMove(game) {
+export function getNextMoves(game) {
     const snake = game.snake.slice();
     const grid = game.grid.slice();
     const apple = game.apple.slice();
@@ -115,4 +115,8 @@ export function getNextMove(game) {
     }
 
     return getBestMove(moves, scores);
+}
+
+export function getNextMove(game) {
+    return getNextMoves(game)[0];
 }
