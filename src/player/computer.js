@@ -36,16 +36,16 @@ export function getMoveScore(move, snake, apple, grid, tick) {
     const newSnake = moveSnakeHead(snake.slice(), move);
     const newSnakeHead = newSnake[newSnake.length - 1];
 
-    if (isSnakeHeadAtPosition(newSnake, apple.slice())) {
+    if (isSnakeHeadAtPosition(newSnake, apple)) {
         // @FIXME: estimate freedom of movement
-        if (!getPossibleMoves(apple.slice(), grid.slice(), snake.slice()).length) {
+        if (!getPossibleMoves(apple, grid, snake).length) {
             return 0;
         }
 
         return (1 / tick) * 10;
     }
 
-    if (isCollide(newSnakeHead, grid.slice())) {
+    if (isCollide(newSnakeHead, grid)) {
         return 0;
     }
 
@@ -77,9 +77,9 @@ export function getNextMove(game) {
 
     const snakeHead = snake[snake.length - 1];
     const possibleMoves = getPossibleMoves(snakeHead, grid, snake);
-    let scores = new Uint8Array([]);
-    let moves = possibleMoves.map(possibleMove => {
-        scores = new Uint8Array([...scores, getMoveScore(possibleMove, snake, apple, grid, 1)]);
+    let scores = new Uint8Array(possibleMoves.length);
+    let moves = possibleMoves.map((possibleMove, index) => {
+        scores[index] = getMoveScore(possibleMove, snake, apple, grid, 1);
         return new Uint8Array([possibleMove]);
     });
 
@@ -89,7 +89,6 @@ export function getNextMove(game) {
         moves.forEach((move, index) => {
             let newApple = game.apple.slice();
             let newSnake = game.snake.slice();
-            let newGrid = game.grid.slice();
 
             move.forEach(m => {
                 newSnake = moveSnakeHead(newSnake, m);
@@ -100,7 +99,7 @@ export function getNextMove(game) {
                 }
             });
 
-            newGrid = initializeGrid(game.size, newSnake, newApple);
+            const newGrid = initializeGrid(game.size, newSnake, newApple);
             const newSnakeHead = newSnake[newSnake.length - 1];
             getPossibleMoves(newSnakeHead, newGrid, newSnake).forEach(possibleMove => {
                 const newScore = getMoveScore(possibleMove, newSnake, apple, newGrid, tick);
