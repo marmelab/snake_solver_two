@@ -3,24 +3,20 @@ const APPLE = 2;
 const [UP, RIGHT, DOWN, LEFT] = [0, 1, 2, 3];
 
 export function initializeGrid([width, height], snake, [xApple, yApple]) {
+    let x, l;
     const grid = new Array(width);
-    for (let x = 0; x < width; x++) {
-        grid[x] = new Array(height);
-        grid[x].fill(0);
-        for (let y = 0; y < height; y++) {
-            grid[x][y] = 0;
-        }
+    for (x = 0; x < width; ++x) {
+        grid[x] = (new Uint8Array(height)).fill(0);
     }
 
-    snake.forEach(([xSnake, ySnake]) => {
-        grid[xSnake][ySnake] = BLOCK;
-    });
+    for (x = 0, l = snake.length; x < l; ++x) {
+        grid[snake[x][0]][snake[x][1]] = BLOCK;
+    }
 
     if (!isNaN(xApple) && !isNaN(yApple)) {
         grid[xApple][yApple] = APPLE;
     }
 
-    // return Array(height).fill(Array(width).fill(0)); // @FIXME
     return grid;
 }
 
