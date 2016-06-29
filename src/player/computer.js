@@ -18,27 +18,14 @@ export function getBestMove(moves, scores) {
     return scoresSelected.shift().move[0];
 }
 
-export function getSnakePossibleMoves(snake, grid) {
-    const snakeHead = snake[snake.length - 1];
+export function getPossibleMoves(cell, grid, snake) {
     const snakeTail = snake[0];
 
     const possibleMove = [];
     [UP, RIGHT, DOWN, LEFT].forEach(move => {
-        const [xNeighbor, yNeighbor] = getAdjacentCell(move, snakeHead);
+        const [xNeighbor, yNeighbor] = getAdjacentCell(move, cell);
         if (isEqual([xNeighbor, yNeighbor], snakeTail) ||
             (!isCollide([xNeighbor, yNeighbor], grid) && grid[xNeighbor][yNeighbor] !== BLOCK)) {
-            possibleMove.push(move);
-        }
-    });
-
-    return possibleMove;
-}
-
-export function getPossibleMoves(cell, grid) {
-    const possibleMove = [];
-    [UP, RIGHT, DOWN, LEFT].forEach(move => {
-        const [xNeighbor, yNeighbor] = getAdjacentCell(move, cell);
-        if (!isCollide([xNeighbor, yNeighbor], grid) && grid[xNeighbor][yNeighbor] !== BLOCK) {
             possibleMove.push(move);
         }
     });
@@ -52,7 +39,7 @@ export function getMoveScore(move, snake, apple, grid, tick) {
 
     if (isSnakeHeadAtPosition(newSnake, apple.slice())) {
         // @FIXME: estimate freedom of movement
-        if (!getPossibleMoves(apple.slice(), grid.slice()).length) {
+        if (!getPossibleMoves(apple.slice(), grid.slice(), snake.slice()).length) {
             return 0;
         }
 
@@ -89,7 +76,8 @@ export function getNextMove(game) {
         }
     }
 
-    const possibleMoves = getSnakePossibleMoves(snake, grid);
+    const snakeHead = snake[snake.length - 1];
+    const possibleMoves = getPossibleMoves(snakeHead, grid, snake);
     let scores = new Uint8Array([]);
     let moves = possibleMoves.map(possibleMove => {
         scores = new Uint8Array([...scores, getMoveScore(possibleMove, snake, apple, grid, 1)]);
@@ -114,7 +102,8 @@ export function getNextMove(game) {
             });
 
             newGrid = initializeGrid(game.size, newSnake, newApple);
-            getSnakePossibleMoves(newSnake, newGrid).forEach(possibleMove => {
+            const newSnakeHead = newSnake[newSnake.length - 1];
+            getPossibleMoves(newSnakeHead, newGrid, newSnake).forEach(possibleMove => {
                 const newScore = getMoveScore(possibleMove, newSnake, apple, newGrid, tick);
                 newScores = new Uint8Array([...newScores, Math.max(newScore, scores[index])]);
                 newMoves.push(new Uint8Array([...move, possibleMove]));
