@@ -1,14 +1,13 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const path = require('path');
-const root = path.resolve(__dirname);
+const config = require('config');
+const webpack = require('webpack');
 
 module.exports = {
-    context: `${__dirname}/src`,
     entry: {
         index: [
-            './js/main.js',
-            './css/main.scss',
+            './src/js/main.js',
+            './src/css/main.scss',
         ],
     },
     output: {
@@ -30,9 +29,8 @@ module.exports = {
             },
             {
                 test: /\.jsx?$/,
-                loader: 'babel-loader',
+                loader: 'babel',
                 exclude: /node_modules/,
-                include: root,
             },
         ],
     },
@@ -45,9 +43,8 @@ module.exports = {
         new ExtractTextPlugin('[name].css', {
             allChunks: false,
         }),
+        new webpack.DefinePlugin({
+            CONFIG: JSON.stringify(config),
+        }),
     ],
-    resolve: {
-        root: path.resolve(`${__dirname}`),
-        extensions: ['', '.js'],
-    },
 };

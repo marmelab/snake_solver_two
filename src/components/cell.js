@@ -1,9 +1,8 @@
 import React from 'react';
-import * as config from '../js/config';
 
 const cellStyle = {
-    width: 250 / config.width,
-    height: 250 / config.height,
+    width: 250 / CONFIG.width,
+    height: 250 / CONFIG.height,
 };
 
 const Cell = (props) => (<div className={props.type} style={cellStyle}></div>);
