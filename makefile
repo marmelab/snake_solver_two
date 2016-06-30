@@ -15,4 +15,5 @@ run: ## Run application
 
 .PHONY: test
 test: ## Run unit tests
+	@ cp -n config/test.dist.json config/test.json
 	@ NODE_ENV=test ./node_modules/.bin/mocha --compilers js:babel-core/register --require babel-polyfill test/setup.js test/*.spec.js
