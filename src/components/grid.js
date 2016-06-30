@@ -7,8 +7,8 @@ const BLOCK = 1;
 const APPLE = 2;
 
 const gridStyle = {
-    width: 250,
-    height: 250,
+    width: CONFIG.cellSize * CONFIG.width,
+    height: CONFIG.cellSize * CONFIG.height,
 };
 
 const Grid = ({ grid, snake }) => {

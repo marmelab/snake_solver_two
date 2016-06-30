@@ -1,8 +1,8 @@
 import React from 'react';
 
 const cellStyle = {
-    width: 250 / CONFIG.width,
-    height: 250 / CONFIG.height,
+    width: CONFIG.cellSize,
+    height: CONFIG.cellSize,
     outline: (CONFIG.displayGrid) ? '1px solid grey' : 'none',
 };
 
