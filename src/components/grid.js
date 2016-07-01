@@ -6,9 +6,10 @@ import { isEqual } from '../js/utils';
 const BLOCK = 1;
 const APPLE = 2;
 
+const config = CONFIG;
 const gridStyle = {
-    width: 250,
-    height: 250,
+    width: config.cellSize * config.width,
+    height: config.cellSize * config.height,
 };
 
 const Grid = ({ grid, snake }) => {

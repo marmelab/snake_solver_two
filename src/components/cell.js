@@ -1,9 +1,10 @@
 import React from 'react';
 
+const config = CONFIG;
 const cellStyle = {
-    width: 250 / CONFIG.width,
-    height: 250 / CONFIG.height,
-    outline: (CONFIG.displayGrid) ? '1px solid grey' : 'none',
+    width: config.cellSize,
+    height: config.cellSize,
+    outline: (config.displayGrid) ? '1px solid grey' : 'none',
 };
 
 const Cell = (props) => (<div className={props.type} style={cellStyle}></div>);
