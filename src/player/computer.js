@@ -4,6 +4,7 @@ import { isEqual } from '../js/utils';
 
 const BLOCK = 1;
 const [UP, RIGHT, DOWN, LEFT] = [0, 1, 2, 3];
+const config = CONFIG;
 
 export function getBestMove(moves, scores) {
     const scoresSelected = [];
@@ -83,7 +84,7 @@ export function getNextMove(game) {
         return new Uint8Array([possibleMove]);
     });
 
-    for (let tick = 1; tick <= CONFIG.maxTick; tick++) {
+    for (let tick = 1; tick <= config.maxTick; tick++) {
         const newMoves = [];
         let newScores = new Uint8Array([]);
         moves.forEach((move, index) => {
