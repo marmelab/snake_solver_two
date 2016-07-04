@@ -11,11 +11,14 @@ export default class Game {
         this.grid = initializeGrid(size, this.snake, this.apple);
         this.surface = x * y;
         this.score = 0;
+        this.isSnakeEating = false;
     }
 
     nextTick(nextMove) {
+        this.isSnakeEating = false;
         const newSnake = moveSnakeHead(this.snake, nextMove);
         if (isSnakeHeadAtPosition(newSnake, this.apple)) {
+            this.isSnakeEating = true;
             this.score++;
             this.snake = newSnake;
             this.apple = findRandomApplePosition(this.grid);

@@ -6,7 +6,7 @@ const BLOCK = 1;
 const [UP, RIGHT, DOWN, LEFT] = [0, 1, 2, 3];
 const config = CONFIG;
 
-export function getBestMove(moves, scores) {
+export function getBestPath(moves, scores) {
     const scoresSelected = [];
     scores.forEach((score, index) => {
         if (score > 0) {
@@ -64,6 +64,16 @@ export function getLastMove(snake, apple) {
     })[0];
 }
 
+export function hasAppleInPath(path, snake, apple) {
+    return path.some(m => {
+        const newSnake = moveSnakeHead(snake, m);
+        if (isSnakeHeadAtPosition(newSnake, apple)) {
+            return true;
+        }
+        return false;
+    });
+}
+
 export function getNextMoves(game) {
     const snake = game.snake.slice();
     const grid = game.grid.slice();
@@ -114,9 +124,11 @@ export function getNextMoves(game) {
         }
     }
 
-    return getBestMove(moves, scores);
+    const bestPath = getBestPath(moves, scores);
+    const hasFoundApple = hasAppleInPath(bestPath, snake, apple);
+    return [bestPath, hasFoundApple];
 }
 
 export function getNextMove(game) {
-    return getNextMoves(game)[0];
+    return getNextMoves(game)[0][0];
 }

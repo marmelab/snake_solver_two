@@ -26,8 +26,17 @@ class App extends React.Component {
     tick() {
         setTimeout(() => {
             try {
+                if (game.isSnakeEating) {
+                    movesQueue = [];
+                }
+
                 if (!movesQueue.length) {
-                    movesQueue = Array.from(getNextMoves(game));
+                    const [path, hasFoundApple] = getNextMoves(game);
+                    if (hasFoundApple) {
+                        movesQueue = Array.from(path);
+                    } else {
+                        movesQueue = [path[0]];
+                    }
                 }
 
                 game.nextTick(movesQueue.shift());
