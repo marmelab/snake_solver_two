@@ -5,6 +5,9 @@ import { isEqual } from '../js/utils';
 const BLOCK = 1;
 const [UP, RIGHT, DOWN, LEFT] = [0, 1, 2, 3];
 const config = CONFIG;
+const oneSecond = 1000;
+let maxTick = config.maxStartTick;
+let lastDiffTime;
 
 export function getBestMove(moves, scores) {
     const scoresSelected = [];
@@ -76,6 +79,7 @@ export function getNextMove(game) {
         }
     }
 
+    const startTime = new Date().getTime();
     const snakeHead = snake[snake.length - 1];
     const possibleMoves = getPossibleMoves(snakeHead, grid, snake);
     let scores = new Uint8Array(possibleMoves.length);
@@ -84,7 +88,7 @@ export function getNextMove(game) {
         return new Uint8Array([possibleMove]);
     });
 
-    for (let tick = 1; tick <= config.maxTick; tick++) {
+    for (let tick = 1; tick <= maxTick; tick++) {
         const newMoves = [];
         let newScores = new Uint8Array([]);
         moves.forEach((move, index) => {
@@ -113,6 +117,16 @@ export function getNextMove(game) {
             scores = newScores;
         }
     }
+    const endTime = new Date().getTime();
+    const newDiffTime = endTime - startTime;
+
+    if (newDiffTime > lastDiffTime || newDiffTime > oneSecond) {
+        maxTick--;
+    } else if (newDiffTime < lastDiffTime || newDiffTime < oneSecond) {
+        maxTick++;
+    }
+
+    lastDiffTime = newDiffTime;
 
     return getBestMove(moves, scores);
 }
