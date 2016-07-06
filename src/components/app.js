@@ -2,10 +2,11 @@ import React from 'react';
 import ReactDom from 'react-dom';
 import Grid from './grid';
 import Game from '../game/game';
-import { getNextMove } from '../player/computer';
+import { getNextMoves } from '../player/computer';
 
 const config = CONFIG;
 const game = new Game([config.width, config.height]);
+let movesQueue = [];
 
 class App extends React.Component {
     constructor(props) {
@@ -25,8 +26,20 @@ class App extends React.Component {
     tick() {
         setTimeout(() => {
             try {
-                const nextMove = getNextMove(game);
-                game.nextTick(nextMove);
+                if (game.isSnakeEating) {
+                    movesQueue = [];
+                }
+
+                if (!movesQueue.length) {
+                    const [path, hasFoundApple] = getNextMoves(game);
+                    if (hasFoundApple) {
+                        movesQueue = Array.from(path);
+                    } else {
+                        movesQueue = [path[0]];
+                    }
+                }
+
+                game.nextTick(movesQueue.shift());
                 this.setState({
                     grid: game.getGrid(),
                     score: game.score,

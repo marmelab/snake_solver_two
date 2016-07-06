@@ -9,7 +9,7 @@ const oneSecond = 1000;
 let maxTick = config.maxStartTick;
 let lastDiffTime;
 
-export function getBestMove(moves, scores) {
+export function getBestPath(moves, scores) {
     const scoresSelected = [];
     scores.forEach((score, index) => {
         if (score > 0) {
@@ -18,7 +18,7 @@ export function getBestMove(moves, scores) {
     });
 
     scoresSelected.sort((scoreA, scoreB) => scoreB.score - scoreA.score);
-    return scoresSelected.shift().move[0];
+    return scoresSelected.shift().move;
 }
 
 export function getPossibleMoves(cell, grid, snake) {
@@ -67,7 +67,17 @@ export function getLastMove(snake, apple) {
     })[0];
 }
 
-export function getNextMove(game) {
+export function hasAppleInPath(path, snake, apple) {
+    return path.some(m => {
+        const newSnake = moveSnakeHead(snake, m);
+        if (isSnakeHeadAtPosition(newSnake, apple)) {
+            return true;
+        }
+        return false;
+    });
+}
+
+export function getNextMoves(game) {
     const snake = game.snake.slice();
     const grid = game.grid.slice();
     const apple = game.apple.slice();
@@ -128,5 +138,11 @@ export function getNextMove(game) {
 
     lastDiffTime = newDiffTime;
 
-    return getBestMove(moves, scores);
+    const bestPath = getBestPath(moves, scores);
+    const hasFoundApple = hasAppleInPath(bestPath, snake, apple);
+    return [bestPath, hasFoundApple];
+}
+
+export function getNextMove(game) {
+    return getNextMoves(game)[0][0];
 }
