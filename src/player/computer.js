@@ -43,7 +43,7 @@ export function getMoveScore(move, snake, apple, grid, tick) {
             return 0;
         }
 
-        return (1 / tick) * 10;
+        return (1 / tick) * 100;
     }
 
     return 1;
