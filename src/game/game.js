@@ -28,6 +28,8 @@ export default class Game {
         }
 
         if (this.isWon()) {
+            this.apple = '';
+            this.grid = initializeGrid(this.size, this.snake, this.apple);
             throw new Error('You win !');
         }
 

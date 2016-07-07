@@ -128,5 +128,9 @@ export function getNextMove(game) {
 
     lastDiffTime = newDiffTime;
 
+    if (!moves.length) {
+        throw new Error('No possible moves :(');
+    }
+
     return getBestMove(moves, scores);
 }
