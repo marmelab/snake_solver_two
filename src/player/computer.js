@@ -60,7 +60,7 @@ export function getLastMove(snake, apple) {
     })[0];
 }
 
-export function getNextMove(game) {
+export function getNextMove(game, debug) {
     const snake = game.snake.slice();
     const grid = game.grid.slice();
     const apple = game.apple.slice();
@@ -121,8 +121,12 @@ export function getNextMove(game) {
 
     lastDiffTime = newDiffTime;
 
-    if (!moves.length) {
-        return false;
+    if (debug) {
+        debug({
+            moves: moves.length,
+            computationTime: newDiffTime,
+            maxTick,
+        });
     }
 
     return getBestMove(moves, scores);
