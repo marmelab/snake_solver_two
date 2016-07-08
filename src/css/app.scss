@@ -14,9 +14,10 @@ body{
 }
 
 #app {
-    position: relative;
-    margin: 50px auto;
-    width: 250px; // @FIXME: Add in React Component
+    position: absolute;
+    left: 50%;
+    margin-top: 50px;
+    transform: translate(-50%);
 }
 
 .message {
