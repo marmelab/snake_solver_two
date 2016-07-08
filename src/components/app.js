@@ -63,6 +63,7 @@ class App extends React.Component {
                 <Grid grid={this.state.grid} snake={this.state.snake} />
                 <DebugWindow
                     computationTime={debug.computationTime}
+                    bestMoveScore={debug.bestMoveScore}
                     score={this.state.score}
                     maxTick={debug.maxTick}
                     moves={debug.moves}
