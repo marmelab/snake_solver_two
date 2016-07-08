@@ -46,7 +46,7 @@ class App extends React.Component {
         }
 
         if (game.isLost()) {
-            return (<div className="message">You lose :(</div>);
+            return (<div className="message">You lose..</div>);
         }
 
         return false;

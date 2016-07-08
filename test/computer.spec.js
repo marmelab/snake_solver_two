@@ -79,7 +79,9 @@ describe('computer', () => {
         ];
         game.grid = initializeGrid(game.size, game.snake, game.apple);
         const nextMove = getNextMove(game);
+        game.nextTick(nextMove);
         assert.equal(nextMove, LEFT);
+        assert.equal(game.apple, '');
     });
 
     /*

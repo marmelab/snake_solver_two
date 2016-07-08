@@ -1,6 +1,6 @@
-import { initializeGrid } from './grid';
-import findRandomApplePosition from './apple';
-import { moveSnakeHead, isSnakeHeadAtPosition, removeSnakeTail, isCollide } from './snake';
+import { moveSnakeHead, isSnakeHeadAtPosition, removeSnakeTail, getHeadSnake } from './snake';
+import { initializeGrid, isOutsideBoundingBox } from './grid';
+import { findRandomApplePosition } from './apple';
 
 export default class Game {
     constructor(size) {
@@ -23,14 +23,8 @@ export default class Game {
             this.snake = removeSnakeTail(newSnake);
         }
 
-        if (this.isLost()) {
-            throw new Error('You lose :(');
-        }
-
         if (this.isWon()) {
             this.apple = '';
-            this.grid = initializeGrid(this.size, this.snake, this.apple);
-            throw new Error('You win !');
         }
 
         this.grid = initializeGrid(this.size, this.snake, this.apple);
@@ -49,8 +43,7 @@ export default class Game {
     }
 
     isLost() {
-        const head = this.snake[this.snake.length - 1];
-        return isCollide(head, this.grid);
+        return isOutsideBoundingBox(getHeadSnake(this.snake), this.grid);
     }
 
     isWon() {
