@@ -14,6 +14,11 @@ export default class Game {
     }
 
     nextTick(nextMove) {
+        this.nextMove = nextMove;
+        if (nextMove === false) {
+            return;
+        }
+
         const newSnake = moveSnakeHead(this.snake, nextMove);
         if (isSnakeHeadAtPosition(newSnake, this.apple)) {
             this.score++;
@@ -43,6 +48,10 @@ export default class Game {
     }
 
     isLost() {
+        if (this.nextMove === false) {
+            return true;
+        }
+
         return isOutsideBoundingBox(getHeadSnake(this.snake), this.grid);
     }
 

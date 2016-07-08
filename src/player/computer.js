@@ -122,7 +122,7 @@ export function getNextMove(game) {
     lastDiffTime = newDiffTime;
 
     if (!moves.length) {
-        throw new Error('No possible moves :(');
+        return false;
     }
 
     return getBestMove(moves, scores);
