@@ -7,7 +7,7 @@ const cellStyle = {
     outline: (config.displayGrid) ? '1px solid grey' : 'none',
 };
 
-const Cell = (props) => (<div className={props.type} style={cellStyle}></div>);
+const Cell = (props) => <div className={props.type} style={cellStyle}></div>;
 Cell.propTypes = {
     type: React.PropTypes.string,
 };

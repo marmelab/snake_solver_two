@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDom from 'react-dom';
 import Grid from './grid';
+import DebugBar from './debugBar';
 import Game from '../game/game';
 import { getNextMove } from '../player/computer';
 
@@ -55,9 +56,9 @@ class App extends React.Component {
     render() {
         return (
             <div>
-                <div className="score">Score: {this.state.score}</div>
-                <Grid grid={this.state.grid} snake={this.state.snake} />
                 {this.renderMessage()}
+                <Grid grid={this.state.grid} snake={this.state.snake} />
+                <DebugBar score={this.state.score} moves="0" computationTime="0" />
             </div>
         );
     }
