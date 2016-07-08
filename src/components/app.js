@@ -9,19 +9,24 @@ const config = CONFIG;
 const game = new Game([config.width, config.height]);
 
 class App extends React.Component {
-    constructor(props) {
-        super(props);
-
+    constructor() {
+        super();
         this.state = {
             grid: game.getGrid(),
             score: game.score,
             snake: game.snake,
             debug: [],
         };
+        this.start = this.start.bind(this);
+        this.restart = this.restart.bind(this);
     }
 
-    componentWillMount() {
+    start() {
         this.tick();
+    }
+
+    restart() {
+        game.init();
     }
 
     tick() {
@@ -72,9 +77,14 @@ class App extends React.Component {
                     moves={this.state.debug.moves}
                     score={this.state.score}
                 />
+                <button onClick={this.start}>{this.props.buttonTxt}</button>
+                <button onClick={this.restart}>Restart</button>
             </div>
         );
     }
 }
+
+App.defaultProps = { buttonTxt: 'Start' };
+App.propTypes = { buttonTxt: React.PropTypes.string };
 
 ReactDom.render(<App />, document.getElementById('app'));

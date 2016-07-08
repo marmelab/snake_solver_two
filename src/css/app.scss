@@ -5,7 +5,7 @@ $snake-color: #00FF00;
 $apple-color: #FFFF00;
 $head-color: #006400;
 
-* {
+*:not(button) {
     color: $text-color;
 }
 
