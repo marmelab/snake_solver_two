@@ -16,7 +16,7 @@ class App extends React.Component {
             grid: game.getGrid(),
             score: game.score,
             snake: game.snake,
-            infos: [],
+            debug: [],
         };
     }
 
@@ -27,13 +27,13 @@ class App extends React.Component {
     tick() {
         setTimeout(() => {
             try {
-                const nextMove = getNextMove(game);
-                game.nextTick(nextMove[0]);
+                const { nextMove, debug } = getNextMove(game);
+                game.nextTick(nextMove);
                 this.setState({
                     grid: game.getGrid(),
                     score: game.score,
                     snake: game.snake,
-                    infos: nextMove[1],
+                    debug,
                 });
                 this.tick();
             } catch (e) {
@@ -66,11 +66,11 @@ class App extends React.Component {
                 {this.renderMessage()}
                 <Grid grid={this.state.grid} snake={this.state.snake} />
                 <DebugWindow
-                    computationTime={this.state.infos.computationTime}
-                    bestMoveScore={this.state.infos.bestMoveScore}
+                    computationTime={this.state.debug.computationTime}
+                    bestMoveScore={this.state.debug.bestMoveScore}
+                    maxTick={this.state.debug.maxTick}
+                    moves={this.state.debug.moves}
                     score={this.state.score}
-                    maxTick={this.state.infos.maxTick}
-                    moves={this.state.infos.moves}
                 />
             </div>
         );

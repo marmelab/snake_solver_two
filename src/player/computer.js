@@ -122,10 +122,13 @@ export function getNextMove(game) {
     lastDiffTime = newDiffTime;
 
     const bestMove = getBestMove(moves, scores);
-    return [bestMove.move[0], {
-        moves: moves.length,
-        computationTime: newDiffTime,
-        bestMoveScore: bestMove.score,
-        maxTick,
-    }];
+    return {
+        nextMove: bestMove.move[0],
+        debug: {
+            moves: moves.length,
+            computationTime: newDiffTime,
+            bestMoveScore: bestMove.score,
+            maxTick,
+        },
+    };
 }
