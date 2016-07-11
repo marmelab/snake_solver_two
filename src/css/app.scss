@@ -14,23 +14,33 @@ body{
 }
 
 #app {
+    position: absolute;
+    left: 50%;
     margin-top: 50px;
+    transform: translate(-50%);
+}
+
+.message {
+    z-index: 1;
+    top: 40%;
+    right: 0;
+    left: 0;
+    margin: 0 auto;
+    position: absolute;
+
+    font-size: 45px;
     text-align: center;
+    font-weight: bold;
 }
 
 #grid{
     display: flex;
     flex-wrap: wrap;
-    margin: auto;
     outline: 1px solid grey;
-
-    div {
-        position: relative;
-        background-size: cover;
-    }
 
     .snake {
         background-repeat: no-repeat;
+        background-size: cover;
 
         &.vertical_head_up {
             background-image: url('../images/snake.png');
@@ -107,6 +117,7 @@ body{
         background-image: url('../images/apple.png');
         background-position: center center;
         background-repeat: no-repeat;
+        background-size: cover;
         background-size: 80%;
     }
 }

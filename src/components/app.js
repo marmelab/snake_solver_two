@@ -27,17 +27,29 @@ class App extends React.Component {
             try {
                 const nextMove = getNextMove(game);
                 game.nextTick(nextMove);
-                this.setState({
-                    grid: game.getGrid(),
-                    score: game.score,
-                    snake: game.snake,
-                });
                 this.tick();
             } catch (e) {
                 console.log(e.message);
                 console.log('Finish !');
             }
+            this.setState({
+                grid: game.getGrid(),
+                score: game.score,
+                snake: game.snake,
+            });
         }, config.speed);
+    }
+
+    renderMessage() {
+        if (game.isWon()) {
+            return (<div className="message">You win !</div>);
+        }
+
+        if (game.isLost()) {
+            return (<div className="message">You lose..</div>);
+        }
+
+        return false;
     }
 
     render() {
@@ -45,6 +57,7 @@ class App extends React.Component {
             <div>
                 <div className="score">Score: {this.state.score}</div>
                 <Grid grid={this.state.grid} snake={this.state.snake} />
+                {this.renderMessage()}
             </div>
         );
     }

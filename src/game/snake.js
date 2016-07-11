@@ -1,17 +1,21 @@
 import { getAdjacentCell } from './grid';
 import { isEqual } from '../js/utils';
 
+const [UP, RIGHT, DOWN, LEFT] = [0, 1, 2, 3];
+
 export function getHeadSnake(snake) {
     return snake[snake.length - 1];
 }
-
-const [UP, RIGHT, DOWN, LEFT] = [0, 1, 2, 3];
 
 export function moveSnakeHead(snake, nextMove) {
     const head = getHeadSnake(snake);
     const newHead = getAdjacentCell(nextMove, head);
     snake.push(newHead);
     return snake;
+}
+
+export function isSnakeFillSurface(snake, surface) {
+    return snake.length === surface - 1;
 }
 
 export function removeSnakeTail(snake) {
@@ -22,16 +26,6 @@ export function removeSnakeTail(snake) {
 export function isSnakeHeadAtPosition(snake, position) {
     const head = getHeadSnake(snake);
     return isEqual(head, position);
-}
-
-export function isCollide([xCell, yCell], grid) {
-    const MAX_WIDTH = grid[0].length;
-    const MAX_HEIGHT = grid.length;
-    if (xCell >= MAX_WIDTH || yCell >= MAX_HEIGHT || xCell < 0 || yCell < 0) {
-        return true;
-    }
-
-    return false;
 }
 
 export function getDirection(position, target) {

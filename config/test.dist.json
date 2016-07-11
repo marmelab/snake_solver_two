@@ -2,6 +2,6 @@
     "width": 5,
     "height": 5,
     "speed": 100,
-    "maxStartTick": 5,
+    "maxStartTick": 6,
     "displayGrid": false
 }

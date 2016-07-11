@@ -3,7 +3,8 @@ const APPLE = 2;
 const [UP, RIGHT, DOWN, LEFT] = [0, 1, 2, 3];
 
 export function initializeGrid([width, height], snake, [xApple, yApple]) {
-    let x, l;
+    let x;
+    let l;
     const grid = new Array(width);
     for (x = 0; x < width; ++x) {
         grid[x] = (new Uint8Array(height)).fill(0);
@@ -33,4 +34,18 @@ export function getAdjacentCell(move, [x, y]) {
     default:
         return false;
     }
+}
+
+export function isEmptyCell([xCell, yCell], grid) {
+    return grid[xCell][yCell] !== BLOCK;
+}
+
+export function isOutsideBoundingBox([xCell, yCell], grid) {
+    const MAX_WIDTH = grid[0].length;
+    const MAX_HEIGHT = grid.length;
+    if (xCell >= MAX_WIDTH || yCell >= MAX_HEIGHT || xCell < 0 || yCell < 0) {
+        return true;
+    }
+
+    return false;
 }

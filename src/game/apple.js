@@ -1,6 +1,6 @@
 const EMPTY = 0;
 
-export default function findRandomApplePosition(grid) {
+export function findRandomApplePosition(grid) {
     const MAX_WIDTH = grid[0].length;
     const MAX_HEIGHT = grid.length;
 
