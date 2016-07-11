@@ -42,7 +42,7 @@ describe('computer', () => {
         game.snake = [[2, 4], [1, 4], [1, 3], [0, 3]];
         game.grid = initializeGrid(game.size, game.snake, game.apple);
 
-        const nextMove = getNextMove(game);
+        const { nextMove } = getNextMove(game);
         assert.equal(nextMove, LEFT);
     });
 
@@ -59,7 +59,7 @@ describe('computer', () => {
         game.snake = [[0, 2], [0, 1], [0, 0], [1, 0], [2, 0], [3, 0], [3, 1], [3, 2], [3, 3], [3, 4]];
         game.grid = initializeGrid(game.size, game.snake, game.apple);
 
-        const nextMove = getNextMove(game);
+        const { nextMove } = getNextMove(game);
         assert.equal(nextMove, UP);
     });
 
@@ -93,7 +93,7 @@ describe('computer', () => {
     */
     it('should return next move', () => {
         const game = new Game([5, 5]);
-        const nextMove = getNextMove(game);
+        const { nextMove } = getNextMove(game);
         assert.equal(nextMove, RIGHT);
     });
 
@@ -110,7 +110,7 @@ describe('computer', () => {
         game.apple = [4, 0];
         game.grid = initializeGrid(game.size, game.snake, game.apple);
 
-        const nextMove = getNextMove(game);
+        const { nextMove } = getNextMove(game);
         assert.equal(nextMove, DOWN);
     });
 
@@ -128,7 +128,7 @@ describe('computer', () => {
         game.apple = [0, 3];
         game.grid = initializeGrid(game.size, game.snake, game.apple);
 
-        const nextMove = getNextMove(game);
+        const { nextMove } = getNextMove(game);
         assert.equal(nextMove, RIGHT);
     });
 
@@ -146,7 +146,7 @@ describe('computer', () => {
         game.apple = [1, 4];
         game.grid = initializeGrid(game.size, game.snake, game.apple);
 
-        const nextMove = getNextMove(game);
+        const { nextMove } = getNextMove(game);
         assert.equal(nextMove, DOWN);
     });
 
@@ -164,7 +164,7 @@ describe('computer', () => {
         game.apple = [1, 3];
         game.grid = initializeGrid(game.size, game.snake, game.apple);
 
-        const nextMove = getNextMove(game);
+        const { nextMove } = getNextMove(game);
         assert.equal(nextMove, LEFT);
     });
 
@@ -182,7 +182,7 @@ describe('computer', () => {
         game.apple = [1, 3];
         game.grid = initializeGrid(game.size, game.snake, game.apple);
 
-        const nextMove = getNextMove(game);
+        const { nextMove } = getNextMove(game);
         assert.equal(nextMove, LEFT);
     });
 
@@ -200,7 +200,7 @@ describe('computer', () => {
         game.apple = [4, 4];
         game.grid = initializeGrid(game.size, game.snake, game.apple);
 
-        const nextMove = getNextMove(game);
+        const { nextMove } = getNextMove(game);
         assert.equal(nextMove, UP);
     });
 
@@ -223,7 +223,7 @@ describe('computer', () => {
         game.apple = [1, 0];
         game.grid = initializeGrid(game.size, game.snake, game.apple);
 
-        const nextMove = getNextMove(game);
+        const { nextMove } = getNextMove(game);
         assert.equal(nextMove, RIGHT);
     });
 });

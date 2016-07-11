@@ -40,7 +40,11 @@ const Grid = ({ grid, snake }) => {
         }
     }
 
-    return <div id="grid" style={gridStyle}>{cells}</div>;
+    return (
+        <div className="grid" style={gridStyle}>
+            {cells}
+        </div>
+    );
 };
 
 Grid.propTypes = {

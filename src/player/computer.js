@@ -17,7 +17,7 @@ export function getBestMove(moves, scores) {
     });
 
     scoresSelected.sort((scoreA, scoreB) => scoreB.score - scoreA.score);
-    return scoresSelected.shift().move[0];
+    return scoresSelected.shift();
 }
 
 export function getPossibleMoves(cell, grid, snake) {
@@ -121,9 +121,14 @@ export function getNextMove(game) {
 
     lastDiffTime = newDiffTime;
 
-    if (!moves.length) {
-        return false;
-    }
-
-    return getBestMove(moves, scores);
+    const bestMove = getBestMove(moves, scores);
+    return {
+        nextMove: bestMove.move[0],
+        debug: {
+            moves: moves.length,
+            computationTime: newDiffTime,
+            bestMoveScore: bestMove.score,
+            maxTick,
+        },
+    };
 }
