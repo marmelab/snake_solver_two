@@ -78,7 +78,7 @@ describe('computer', () => {
             [1, 3], [1, 4], [0, 4], [0, 3], [0, 2], [0, 1], [0, 0], [1, 0], [2, 0], [3, 0], [3, 1], [4, 1],
         ];
         game.grid = initializeGrid(game.size, game.snake, game.apple);
-        const nextMove = getNextMove(game);
+        const { nextMove } = getNextMove(game);
         game.nextTick(nextMove);
         assert.equal(nextMove, LEFT);
         assert.equal(game.apple, '');

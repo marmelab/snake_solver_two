@@ -15,8 +15,8 @@ class App extends React.Component {
             grid: game.getGrid(),
             score: game.score,
             snake: game.snake,
-            debug: [],
             start: false,
+            debug: [],
         };
         this.start = this.start.bind(this);
         this.reset = this.reset.bind(this);
@@ -38,6 +38,7 @@ class App extends React.Component {
             score: game.score,
             snake: game.snake,
             start: false,
+            debug: {},
         });
     }
 
@@ -53,25 +54,19 @@ class App extends React.Component {
                 return;
             }
 
-            try {
-                const { nextMove, debug } = getNextMove(game);
-                game.nextTick(nextMove);
-                this.setState({
-                    grid: game.getGrid(),
-                    score: game.score,
-                    snake: game.snake,
-                    debug,
-                });
-                this.tick();
-            } catch (e) {
-                console.log(e.message);
-                console.log('Finish !');
-            }
+            const { nextMove, debug } = getNextMove(game);
+            game.nextTick(nextMove);
             this.setState({
                 grid: game.getGrid(),
                 score: game.score,
                 snake: game.snake,
+                debug,
             });
+            this.tick();
+
+            if (game.isLost()) {
+                this.setState({ start: false });
+            }
         }, config.speed);
     }
 
@@ -91,8 +86,7 @@ class App extends React.Component {
         const buttonTxt = this.state.start ? 'Stop' : 'Start';
         return (
             <div>
-                {this.renderMessage()}
-                <Grid grid={this.state.grid} snake={this.state.snake} />
+                <Grid grid={this.state.grid} snake={this.state.snake} message={this.renderMessage()} />
                 <aside>
                     <DebugMenu
                         computationTime={this.state.debug.computationTime}
