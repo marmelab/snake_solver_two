@@ -1,19 +1,19 @@
 import React from 'react';
 
 const config = CONFIG;
-const DebugWindow = (props) => {
+const DebugMenu = (props) => {
     return (
-        <aside>
+        <div className="menu">
             <p><b>Score: {props.score}</b></p>
             <p>Possible moves: {props.moves}</p>
             <p>Computation time: {props.computationTime}ms</p>
             <p>Best move score: {props.bestMoveScore}</p>
             <p>Max tick: {props.maxTick}</p>
-        </aside>
+        </div>
     );
 };
 
-DebugWindow.defaultProps = {
+DebugMenu.defaultProps = {
     maxTick: config.maxStartTick,
     computationTime: 0,
     bestMoveScore: 0,
@@ -21,7 +21,7 @@ DebugWindow.defaultProps = {
     moves: 0,
 };
 
-DebugWindow.propTypes = {
+DebugMenu.propTypes = {
     score: React.PropTypes.number,
     moves: React.PropTypes.number,
     maxTick: React.PropTypes.number,
@@ -29,4 +29,4 @@ DebugWindow.propTypes = {
     computationTime: React.PropTypes.number,
 };
 
-export default DebugWindow;
+export default DebugMenu;

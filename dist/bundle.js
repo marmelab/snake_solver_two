@@ -45,7 +45,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(1);
-	module.exports = __webpack_require__(178);
+	module.exports = __webpack_require__(179);
 
 
 /***/ },
@@ -76,11 +76,15 @@
 
 	var _grid2 = _interopRequireDefault(_grid);
 
-	var _game = __webpack_require__(175);
+	var _debugMenu = __webpack_require__(175);
+
+	var _debugMenu2 = _interopRequireDefault(_debugMenu);
+
+	var _game = __webpack_require__(176);
 
 	var _game2 = _interopRequireDefault(_game);
 
-	var _computer = __webpack_require__(177);
+	var _computer = __webpack_require__(178);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -90,8 +94,8 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var config = ({"width":8,"height":8,"speed":100,"cellSize":50,"maxStartTick":5,"displayGrid":false});
-	var game = new _game2.default([config.width, config.height]);
+	var config = ({"speed":100,"cellSize":50,"maxStartTick":5,"displayGrid":false,"defaultSize":[5,5]});
+	var game = new _game2.default(config.defaultSize);
 
 	var App = function (_React$Component) {
 	    _inherits(App, _React$Component);
@@ -104,22 +108,44 @@
 	        _this.state = {
 	            grid: game.getGrid(),
 	            score: game.score,
-	            snake: game.snake
+	            snake: game.snake,
+	            debug: [],
+	            start: false
 	        };
 	        _this.start = _this.start.bind(_this);
-	        _this.restart = _this.restart.bind(_this);
+	        _this.reset = _this.reset.bind(_this);
+	        _this.changeSizeGrid = _this.changeSizeGrid.bind(_this);
 	        return _this;
 	    }
 
 	    _createClass(App, [{
-	        key: 'start',
-	        value: function start() {
+	        key: 'componentWillMount',
+	        value: function componentWillMount() {
 	            this.tick();
 	        }
 	    }, {
-	        key: 'restart',
-	        value: function restart() {
+	        key: 'start',
+	        value: function start() {
+	            this.setState({ start: !this.state.start });
+	        }
+	    }, {
+	        key: 'reset',
+	        value: function reset() {
 	            game.init();
+	            this.setState({
+	                grid: game.getGrid(),
+	                score: game.score,
+	                snake: game.snake,
+	                start: false
+	            });
+	        }
+	    }, {
+	        key: 'changeSizeGrid',
+	        value: function changeSizeGrid(event) {
+	            game.size = event.target.value.split('x').map(function (size) {
+	                return Number(size);
+	            });
+	            this.reset();
 	        }
 	    }, {
 	        key: 'tick',
@@ -127,43 +153,109 @@
 	            var _this2 = this;
 
 	            setTimeout(function () {
+	                if (!_this2.state.start) {
+	                    _this2.tick();
+	                    return;
+	                }
+
 	                try {
-	                    var nextMove = (0, _computer.getNextMove)(game);
+	                    var _getNextMove = (0, _computer.getNextMove)(game);
+
+	                    var nextMove = _getNextMove.nextMove;
+	                    var debug = _getNextMove.debug;
+
 	                    game.nextTick(nextMove);
 	                    _this2.setState({
 	                        grid: game.getGrid(),
 	                        score: game.score,
-	                        snake: game.snake
+	                        snake: game.snake,
+	                        debug: debug
 	                    });
 	                    _this2.tick();
 	                } catch (e) {
 	                    console.log(e.message);
 	                    console.log('Finish !');
 	                }
+	                _this2.setState({
+	                    grid: game.getGrid(),
+	                    score: game.score,
+	                    snake: game.snake
+	                });
 	            }, config.speed);
+	        }
+	    }, {
+	        key: 'renderMessage',
+	        value: function renderMessage() {
+	            if (game.isWon()) {
+	                return _react2.default.createElement(
+	                    'div',
+	                    { className: 'message' },
+	                    'You win !'
+	                );
+	            }
+
+	            if (game.isLost()) {
+	                return _react2.default.createElement(
+	                    'div',
+	                    { className: 'message' },
+	                    'You lose..'
+	                );
+	            }
+
+	            return false;
 	        }
 	    }, {
 	        key: 'render',
 	        value: function render() {
+	            var buttonTxt = this.state.start ? 'Stop' : 'Start';
 	            return _react2.default.createElement(
 	                'div',
 	                null,
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'score' },
-	                    'Score: ',
-	                    this.state.score
-	                ),
+	                this.renderMessage(),
 	                _react2.default.createElement(_grid2.default, { grid: this.state.grid, snake: this.state.snake }),
 	                _react2.default.createElement(
-	                    'button',
-	                    { onClick: this.start },
-	                    this.props.buttonTxt
-	                ),
-	                _react2.default.createElement(
-	                    'button',
-	                    { onClick: this.restart },
-	                    'Restart'
+	                    'aside',
+	                    null,
+	                    _react2.default.createElement(_debugMenu2.default, {
+	                        computationTime: this.state.debug.computationTime,
+	                        bestMoveScore: this.state.debug.bestMoveScore,
+	                        maxTick: this.state.debug.maxTick,
+	                        moves: this.state.debug.moves,
+	                        score: this.state.score
+	                    }),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'menu' },
+	                        _react2.default.createElement(
+	                            'button',
+	                            { onClick: this.start },
+	                            buttonTxt
+	                        ),
+	                        _react2.default.createElement(
+	                            'button',
+	                            { onClick: this.reset },
+	                            'Reset'
+	                        ),
+	                        _react2.default.createElement(
+	                            'select',
+	                            { onChange: this.changeSizeGrid },
+	                            _react2.default.createElement(
+	                                'option',
+	                                null,
+	                                '5x5'
+	                            ),
+	                            _react2.default.createElement(
+	                                'option',
+	                                null,
+	                                '8x8'
+	                            ),
+	                            _react2.default.createElement(
+	                                'option',
+	                                null,
+	                                '10x10'
+	                            )
+	                        )
+	                    )
 	                )
 	            );
 	        }
@@ -171,9 +263,6 @@
 
 	    return App;
 	}(_react2.default.Component);
-
-	App.defaultProps = { buttonTxt: 'Start' };
-	App.propTypes = { buttonTxt: _react2.default.PropTypes.string };
 
 	_reactDom2.default.render(_react2.default.createElement(App, null), document.getElementById('app'));
 
@@ -20497,12 +20586,6 @@
 	var BLOCK = 1;
 	var APPLE = 2;
 
-	var config = ({"width":8,"height":8,"speed":100,"cellSize":50,"maxStartTick":5,"displayGrid":false});
-	var gridStyle = {
-	    width: config.cellSize * config.width,
-	    height: config.cellSize * config.height
-	};
-
 	var Grid = function Grid(_ref) {
 	    var grid = _ref.grid;
 	    var snake = _ref.snake;
@@ -20542,9 +20625,15 @@
 	        _loop(x);
 	    }
 
+	    var config = ({"speed":100,"cellSize":50,"maxStartTick":5,"displayGrid":false,"defaultSize":[5,5]});
+	    var gridStyle = {
+	        width: config.cellSize * MAX_WIDTH,
+	        height: config.cellSize * MAX_HEIGHT
+	    };
+
 	    return _react2.default.createElement(
 	        'div',
-	        { id: 'grid', style: gridStyle },
+	        { className: 'grid', style: gridStyle },
 	        cells
 	    );
 	};
@@ -20572,7 +20661,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var config = ({"width":8,"height":8,"speed":100,"cellSize":50,"maxStartTick":5,"displayGrid":false});
+	var config = ({"speed":100,"cellSize":50,"maxStartTick":5,"displayGrid":false,"defaultSize":[5,5]});
 	var cellStyle = {
 	    width: config.cellSize,
 	    height: config.cellSize,
@@ -20597,14 +20686,11 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-
-	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
 	exports.getHeadSnake = getHeadSnake;
 	exports.moveSnakeHead = moveSnakeHead;
+	exports.isSnakeFillSurface = isSnakeFillSurface;
 	exports.removeSnakeTail = removeSnakeTail;
 	exports.isSnakeHeadAtPosition = isSnakeHeadAtPosition;
-	exports.isCollide = isCollide;
 	exports.getDirection = getDirection;
 	exports.getBlock = getBlock;
 	exports.getBlocks = getBlocks;
@@ -20613,19 +20699,23 @@
 
 	var _utils = __webpack_require__(174);
 
-	function getHeadSnake(snake) {
-	    return snake[snake.length - 1];
-	}
-
 	var UP = 0;
 	var RIGHT = 1;
 	var DOWN = 2;
 	var LEFT = 3;
+	function getHeadSnake(snake) {
+	    return snake[snake.length - 1];
+	}
+
 	function moveSnakeHead(snake, nextMove) {
 	    var head = getHeadSnake(snake);
 	    var newHead = (0, _grid.getAdjacentCell)(nextMove, head);
 	    snake.push(newHead);
 	    return snake;
+	}
+
+	function isSnakeFillSurface(snake, surface) {
+	    return snake.length === surface - 1;
 	}
 
 	function removeSnakeTail(snake) {
@@ -20636,21 +20726,6 @@
 	function isSnakeHeadAtPosition(snake, position) {
 	    var head = getHeadSnake(snake);
 	    return (0, _utils.isEqual)(head, position);
-	}
-
-	function isCollide(_ref, grid) {
-	    var _ref2 = _slicedToArray(_ref, 2);
-
-	    var xCell = _ref2[0];
-	    var yCell = _ref2[1];
-
-	    var MAX_WIDTH = grid[0].length;
-	    var MAX_HEIGHT = grid.length;
-	    if (xCell >= MAX_WIDTH || yCell >= MAX_HEIGHT || xCell < 0 || yCell < 0) {
-	        return true;
-	    }
-
-	    return false;
 	}
 
 	function getDirection(position, target) {
@@ -20740,6 +20815,8 @@
 
 	exports.initializeGrid = initializeGrid;
 	exports.getAdjacentCell = getAdjacentCell;
+	exports.isEmptyCell = isEmptyCell;
+	exports.isOutsideBoundingBox = isOutsideBoundingBox;
 	var BLOCK = 1;
 	var APPLE = 2;
 	var UP = 0;
@@ -20757,8 +20834,8 @@
 	    var xApple = _ref3[0];
 	    var yApple = _ref3[1];
 
-	    var x = void 0,
-	        l = void 0;
+	    var x = void 0;
+	    var l = void 0;
 	    var grid = new Array(width);
 	    for (x = 0; x < width; ++x) {
 	        grid[x] = new Uint8Array(height).fill(0);
@@ -20795,6 +20872,30 @@
 	    }
 	}
 
+	function isEmptyCell(_ref7, grid) {
+	    var _ref8 = _slicedToArray(_ref7, 2);
+
+	    var xCell = _ref8[0];
+	    var yCell = _ref8[1];
+
+	    return grid[xCell][yCell] !== BLOCK;
+	}
+
+	function isOutsideBoundingBox(_ref9, grid) {
+	    var _ref10 = _slicedToArray(_ref9, 2);
+
+	    var xCell = _ref10[0];
+	    var yCell = _ref10[1];
+
+	    var MAX_WIDTH = grid[0].length;
+	    var MAX_HEIGHT = grid.length;
+	    if (xCell >= MAX_WIDTH || yCell >= MAX_HEIGHT || xCell < 0 || yCell < 0) {
+	        return true;
+	    }
+
+	    return false;
+	}
+
 /***/ },
 /* 174 */
 /***/ function(module, exports) {
@@ -20805,13 +20906,90 @@
 	  value: true
 	});
 	var isEqual = exports.isEqual = function isEqual(a1, a2) {
-	  return a1 !== undefined && a2 !== undefined && a1.every(function (v, i) {
+	  return a1 && a1 !== undefined && a2 !== undefined && a1.every(function (v, i) {
 	    return v === a2[i];
 	  });
 	};
 
 /***/ },
 /* 175 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _react = __webpack_require__(3);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var config = ({"speed":100,"cellSize":50,"maxStartTick":5,"displayGrid":false,"defaultSize":[5,5]});
+	var DebugMenu = function DebugMenu(props) {
+	    return _react2.default.createElement(
+	        "div",
+	        { className: "menu" },
+	        _react2.default.createElement(
+	            "p",
+	            null,
+	            _react2.default.createElement(
+	                "b",
+	                null,
+	                "Score: ",
+	                props.score
+	            )
+	        ),
+	        _react2.default.createElement(
+	            "p",
+	            null,
+	            "Possible moves: ",
+	            props.moves
+	        ),
+	        _react2.default.createElement(
+	            "p",
+	            null,
+	            "Computation time: ",
+	            props.computationTime,
+	            "ms"
+	        ),
+	        _react2.default.createElement(
+	            "p",
+	            null,
+	            "Best move score: ",
+	            props.bestMoveScore
+	        ),
+	        _react2.default.createElement(
+	            "p",
+	            null,
+	            "Max tick: ",
+	            props.maxTick
+	        )
+	    );
+	};
+
+	DebugMenu.defaultProps = {
+	    maxTick: config.maxStartTick,
+	    computationTime: 0,
+	    bestMoveScore: 0,
+	    score: 0,
+	    moves: 0
+	};
+
+	DebugMenu.propTypes = {
+	    score: _react2.default.PropTypes.number,
+	    moves: _react2.default.PropTypes.number,
+	    maxTick: _react2.default.PropTypes.number,
+	    bestMoveScore: _react2.default.PropTypes.number,
+	    computationTime: _react2.default.PropTypes.number
+	};
+
+	exports.default = DebugMenu;
+
+/***/ },
+/* 176 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20824,15 +21002,11 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _grid = __webpack_require__(173);
-
-	var _apple = __webpack_require__(176);
-
-	var _apple2 = _interopRequireDefault(_apple);
-
 	var _snake = __webpack_require__(172);
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	var _grid = __webpack_require__(173);
+
+	var _apple = __webpack_require__(177);
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -20861,21 +21035,22 @@
 	    }, {
 	        key: 'nextTick',
 	        value: function nextTick(nextMove) {
+	            this.nextMove = nextMove;
+	            if (nextMove === false) {
+	                return;
+	            }
+
 	            var newSnake = (0, _snake.moveSnakeHead)(this.snake, nextMove);
 	            if ((0, _snake.isSnakeHeadAtPosition)(newSnake, this.apple)) {
 	                this.score++;
 	                this.snake = newSnake;
-	                this.apple = (0, _apple2.default)(this.grid);
+	                this.apple = (0, _apple.findRandomApplePosition)(this.grid);
 	            } else {
 	                this.snake = (0, _snake.removeSnakeTail)(newSnake);
 	            }
 
-	            if (this.isLost()) {
-	                throw new Error('You lose :(');
-	            }
-
 	            if (this.isWon()) {
-	                throw new Error('You win !');
+	                this.apple = '';
 	            }
 
 	            this.grid = (0, _grid.initializeGrid)(this.size, this.snake, this.apple);
@@ -20898,8 +21073,11 @@
 	    }, {
 	        key: 'isLost',
 	        value: function isLost() {
-	            var head = this.snake[this.snake.length - 1];
-	            return (0, _snake.isCollide)(head, this.grid);
+	            if (this.nextMove === false) {
+	                return true;
+	            }
+
+	            return (0, _grid.isOutsideBoundingBox)((0, _snake.getHeadSnake)(this.snake), this.grid);
 	        }
 	    }, {
 	        key: 'isWon',
@@ -20914,7 +21092,7 @@
 	exports.default = Game;
 
 /***/ },
-/* 176 */
+/* 177 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -20922,7 +21100,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.default = findRandomApplePosition;
+	exports.findRandomApplePosition = findRandomApplePosition;
 	var EMPTY = 0;
 
 	function findRandomApplePosition(grid) {
@@ -20943,7 +21121,7 @@
 	}
 
 /***/ },
-/* 177 */
+/* 178 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20951,9 +21129,6 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-
-	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
 	exports.getBestMove = getBestMove;
 	exports.getPossibleMoves = getPossibleMoves;
 	exports.getMoveScore = getMoveScore;
@@ -20968,13 +21143,12 @@
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
-	var BLOCK = 1;
 	var UP = 0;
 	var RIGHT = 1;
 	var DOWN = 2;
 	var LEFT = 3;
 
-	var config = ({"width":8,"height":8,"speed":100,"cellSize":50,"maxStartTick":5,"displayGrid":false});
+	var config = ({"speed":100,"cellSize":50,"maxStartTick":5,"displayGrid":false,"defaultSize":[5,5]});
 	var oneSecond = 1000;
 	var maxTick = config.maxStartTick;
 	var lastDiffTime = void 0;
@@ -20990,7 +21164,7 @@
 	    scoresSelected.sort(function (scoreA, scoreB) {
 	        return scoreB.score - scoreA.score;
 	    });
-	    return scoresSelected.shift().move[0];
+	    return scoresSelected.shift();
 	}
 
 	function getPossibleMoves(cell, grid, snake) {
@@ -20998,14 +21172,8 @@
 
 	    var possibleMove = [];
 	    [UP, RIGHT, DOWN, LEFT].forEach(function (move) {
-	        var _getAdjacentCell = (0, _grid.getAdjacentCell)(move, cell);
-
-	        var _getAdjacentCell2 = _slicedToArray(_getAdjacentCell, 2);
-
-	        var xNeighbor = _getAdjacentCell2[0];
-	        var yNeighbor = _getAdjacentCell2[1];
-
-	        if ((0, _utils.isEqual)([xNeighbor, yNeighbor], snakeTail) || !(0, _snake.isCollide)([xNeighbor, yNeighbor], grid) && grid[xNeighbor][yNeighbor] !== BLOCK) {
+	        var adjacentCell = (0, _grid.getAdjacentCell)(move, cell);
+	        if ((0, _utils.isEqual)(adjacentCell, snakeTail) || !(0, _grid.isOutsideBoundingBox)(adjacentCell, grid) && (0, _grid.isEmptyCell)(adjacentCell, grid)) {
 	            possibleMove.push(move);
 	        }
 	    });
@@ -21015,35 +21183,23 @@
 
 	function getMoveScore(move, snake, apple, grid, tick) {
 	    var newSnake = (0, _snake.moveSnakeHead)(snake.slice(), move);
-	    var newSnakeHead = newSnake[newSnake.length - 1];
-
 	    if ((0, _snake.isSnakeHeadAtPosition)(newSnake, apple)) {
 	        // @FIXME: estimate freedom of movement
 	        if (!getPossibleMoves(apple, grid, snake).length) {
 	            return 0;
 	        }
 
-	        return 1 / tick * 10;
-	    }
-
-	    if ((0, _snake.isCollide)(newSnakeHead, grid)) {
-	        return 0;
+	        return 1 / tick * 100;
 	    }
 
 	    return 1;
 	}
 
 	function getLastMove(snake, apple) {
-	    var snakeHead = snake[snake.length - 1];
+	    var snakeHead = (0, _snake.getHeadSnake)(snake);
 	    return [UP, RIGHT, DOWN, LEFT].filter(function (move) {
-	        var _getAdjacentCell3 = (0, _grid.getAdjacentCell)(move, snakeHead);
-
-	        var _getAdjacentCell4 = _slicedToArray(_getAdjacentCell3, 2);
-
-	        var xNeighbor = _getAdjacentCell4[0];
-	        var yNeighbor = _getAdjacentCell4[1];
-
-	        if ((0, _utils.isEqual)([xNeighbor, yNeighbor], apple)) {
+	        var adjacentCell = (0, _grid.getAdjacentCell)(move, snakeHead);
+	        if ((0, _utils.isEqual)(adjacentCell, apple)) {
 	            return true;
 	        }
 	        return false;
@@ -21055,7 +21211,7 @@
 	    var grid = game.grid.slice();
 	    var apple = game.apple.slice();
 
-	    if (snake.length === game.surface - 1) {
+	    if ((0, _snake.isSnakeFillSurface)(snake, game.surface)) {
 	        var lastMove = getLastMove(snake, apple);
 	        if (lastMove) {
 	            return lastMove;
@@ -21063,7 +21219,7 @@
 	    }
 
 	    var startTime = new Date().getTime();
-	    var snakeHead = snake[snake.length - 1];
+	    var snakeHead = (0, _snake.getHeadSnake)(snake);
 	    var possibleMoves = getPossibleMoves(snakeHead, grid, snake);
 	    var scores = new Uint8Array(possibleMoves.length);
 	    var moves = possibleMoves.map(function (possibleMove, index) {
@@ -21088,7 +21244,7 @@
 	            });
 
 	            var newGrid = (0, _grid.initializeGrid)(game.size, newSnake, newApple);
-	            var newSnakeHead = newSnake[newSnake.length - 1];
+	            var newSnakeHead = (0, _snake.getHeadSnake)(newSnake);
 	            getPossibleMoves(newSnakeHead, newGrid, newSnake).forEach(function (possibleMove) {
 	                var newScore = getMoveScore(possibleMove, newSnake, apple, newGrid, tick);
 	                newScores = new Uint8Array([].concat(_toConsumableArray(newScores), [Math.max(newScore, scores[index])]));
@@ -21115,11 +21271,20 @@
 
 	    lastDiffTime = newDiffTime;
 
-	    return getBestMove(moves, scores);
+	    var bestMove = getBestMove(moves, scores);
+	    return {
+	        nextMove: bestMove.move[0],
+	        debug: {
+	            moves: moves.length,
+	            computationTime: newDiffTime,
+	            bestMoveScore: bestMove.score,
+	            maxTick: maxTick
+	        }
+	    };
 	}
 
 /***/ },
-/* 178 */
+/* 179 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

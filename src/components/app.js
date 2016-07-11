@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDom from 'react-dom';
 import Grid from './grid';
-import DebugWindow from './debugWindow';
+import DebugMenu from './debugMenu';
 import Game from '../game/game';
 import { getNextMove } from '../player/computer';
 
@@ -19,7 +19,7 @@ class App extends React.Component {
             start: false,
         };
         this.start = this.start.bind(this);
-        this.restart = this.restart.bind(this);
+        this.reset = this.reset.bind(this);
         this.changeSizeGrid = this.changeSizeGrid.bind(this);
     }
 
@@ -31,18 +31,19 @@ class App extends React.Component {
         this.setState({ start: !this.state.start });
     }
 
-    restart() {
+    reset() {
         game.init();
         this.setState({
             grid: game.getGrid(),
             score: game.score,
             snake: game.snake,
+            start: false,
         });
     }
 
     changeSizeGrid(event) {
         game.size = event.target.value.split('x').map(size => Number(size));
-        this.restart();
+        this.reset();
     }
 
     tick() {
@@ -92,19 +93,24 @@ class App extends React.Component {
             <div>
                 {this.renderMessage()}
                 <Grid grid={this.state.grid} snake={this.state.snake} />
-                <DebugWindow
-                    computationTime={this.state.debug.computationTime}
-                    bestMoveScore={this.state.debug.bestMoveScore}
-                    maxTick={this.state.debug.maxTick}
-                    moves={this.state.debug.moves}
-                    score={this.state.score}
-                />
-                <button onClick={this.start}>{buttonTxt}</button>
-                <button onClick={this.restart}>Restart</button>
-                <select onChange={this.changeSizeGrid}>
-                    <option>5x5</option>
-                    <option>10x10</option>
-                </select>
+                <aside>
+                    <DebugMenu
+                        computationTime={this.state.debug.computationTime}
+                        bestMoveScore={this.state.debug.bestMoveScore}
+                        maxTick={this.state.debug.maxTick}
+                        moves={this.state.debug.moves}
+                        score={this.state.score}
+                    />
+                    <div className="menu">
+                        <button onClick={this.start}>{buttonTxt}</button>
+                        <button onClick={this.reset}>Reset</button>
+                        <select onChange={this.changeSizeGrid}>
+                            <option>5x5</option>
+                            <option>8x8</option>
+                            <option>10x10</option>
+                        </select>
+                    </div>
+                </aside>
             </div>
         );
     }

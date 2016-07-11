@@ -40,12 +40,17 @@ body{
         border: 1px solid grey;
     }
 
-    aside {
+    aside .menu {
         color: $text-color;
+        padding: 8px;
         margin-left: 10px;
         width: 200px;
         border: 1px solid grey;
-        padding-left: 10px;
+        margin-bottom: 10px;
+
+        button, select {
+            margin-right: 2px;
+        }
     }
 
     .snake {
