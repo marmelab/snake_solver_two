@@ -6,12 +6,6 @@ import { isEqual } from '../js/utils';
 const BLOCK = 1;
 const APPLE = 2;
 
-const config = CONFIG;
-const gridStyle = {
-    width: config.cellSize * config.width,
-    height: config.cellSize * config.height,
-};
-
 const Grid = ({ grid, snake }) => {
     const MAX_WIDTH = grid[0].length;
     const MAX_HEIGHT = grid.length;
@@ -40,11 +34,13 @@ const Grid = ({ grid, snake }) => {
         }
     }
 
-    return (
-        <div className="grid" style={gridStyle}>
-            {cells}
-        </div>
-    );
+    const config = CONFIG;
+    const gridStyle = {
+        width: config.cellSize * MAX_WIDTH,
+        height: config.cellSize * MAX_HEIGHT,
+    };
+
+    return <div className="grid" style={gridStyle}>{cells}</div>;
 };
 
 Grid.propTypes = {

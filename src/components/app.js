@@ -6,7 +6,7 @@ import Game from '../game/game';
 import { getNextMove } from '../player/computer';
 
 const config = CONFIG;
-const game = new Game([config.width, config.height]);
+const game = new Game(config.defaultSize);
 
 class App extends React.Component {
     constructor() {
@@ -20,6 +20,7 @@ class App extends React.Component {
         };
         this.start = this.start.bind(this);
         this.restart = this.restart.bind(this);
+        this.changeSizeGrid = this.changeSizeGrid.bind(this);
     }
 
     componentWillMount() {
@@ -31,8 +32,17 @@ class App extends React.Component {
     }
 
     restart() {
-        this.setState({ start: true });
         game.init();
+        this.setState({
+            grid: game.getGrid(),
+            score: game.score,
+            snake: game.snake,
+        });
+    }
+
+    changeSizeGrid(event) {
+        game.size = event.target.value.split('x').map(size => Number(size));
+        this.restart();
     }
 
     tick() {
@@ -91,6 +101,10 @@ class App extends React.Component {
                 />
                 <button onClick={this.start}>{buttonTxt}</button>
                 <button onClick={this.restart}>Restart</button>
+                <select onChange={this.changeSizeGrid}>
+                    <option>5x5</option>
+                    <option>10x10</option>
+                </select>
             </div>
         );
     }
