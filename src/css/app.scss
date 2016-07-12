@@ -5,10 +5,6 @@ $snake-color: #00FF00;
 $apple-color: #FFFF00;
 $head-color: #006400;
 
-* {
-    color: $text-color;
-}
-
 body{
     background-color: $body-color;
 }
@@ -21,30 +17,39 @@ body{
     transform: translate(-50%);
     align-items: flex-start;
 
-    .message {
-        z-index: 1;
-        top: 40%;
-        right: 0;
-        left: 0;
-        margin: 0 auto;
-        position: absolute;
-
-        font-size: 45px;
-        text-align: center;
-        font-weight: bold;
+    .score {
+        color: $text-color;
     }
 
     .grid {
         display: flex;
         flex-wrap: wrap;
         border: 1px solid grey;
+        position: relative;
+
+        .message {
+            position: absolute;
+            z-index: 1;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 26px;
+            font-weight: bold;
+            color: white;
+        }
     }
 
-    aside {
+    aside .menu {
+        color: $text-color;
+        padding: 8px;
         margin-left: 10px;
         width: 200px;
         border: 1px solid grey;
-        padding-left: 10px;
+        margin-bottom: 10px;
+
+        button, select {
+            margin-right: 2px;
+        }
     }
 
     .snake {
