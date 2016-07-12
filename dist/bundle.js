@@ -109,8 +109,8 @@
 	            grid: game.getGrid(),
 	            score: game.score,
 	            snake: game.snake,
-	            debug: [],
-	            start: false
+	            start: false,
+	            debug: []
 	        };
 	        _this.start = _this.start.bind(_this);
 	        _this.reset = _this.reset.bind(_this);
@@ -136,7 +136,8 @@
 	                grid: game.getGrid(),
 	                score: game.score,
 	                snake: game.snake,
-	                start: false
+	                start: false,
+	                debug: {}
 	            });
 	        }
 	    }, {
@@ -153,34 +154,32 @@
 	            var _this2 = this;
 
 	            setTimeout(function () {
+	                if (game.isWon()) {
+	                    _this2.setState({ start: false });
+	                }
+
 	                if (!_this2.state.start) {
 	                    _this2.tick();
 	                    return;
 	                }
 
-	                try {
-	                    var _getNextMove = (0, _computer.getNextMove)(game);
+	                var _getNextMove = (0, _computer.getNextMove)(game);
 
-	                    var nextMove = _getNextMove.nextMove;
-	                    var debug = _getNextMove.debug;
+	                var nextMove = _getNextMove.nextMove;
+	                var debug = _getNextMove.debug;
 
-	                    game.nextTick(nextMove);
-	                    _this2.setState({
-	                        grid: game.getGrid(),
-	                        score: game.score,
-	                        snake: game.snake,
-	                        debug: debug
-	                    });
-	                    _this2.tick();
-	                } catch (e) {
-	                    console.log(e.message);
-	                    console.log('Finish !');
-	                }
+	                game.nextTick(nextMove);
 	                _this2.setState({
 	                    grid: game.getGrid(),
 	                    score: game.score,
-	                    snake: game.snake
+	                    snake: game.snake,
+	                    debug: debug
 	                });
+	                _this2.tick();
+
+	                if (game.isLost()) {
+	                    _this2.setState({ start: false });
+	                }
 	            }, config.speed);
 	        }
 	    }, {
@@ -211,8 +210,7 @@
 	            return _react2.default.createElement(
 	                'div',
 	                null,
-	                this.renderMessage(),
-	                _react2.default.createElement(_grid2.default, { grid: this.state.grid, snake: this.state.snake }),
+	                _react2.default.createElement(_grid2.default, { grid: this.state.grid, snake: this.state.snake, message: this.renderMessage() }),
 	                _react2.default.createElement(
 	                    'aside',
 	                    null,
@@ -20589,6 +20587,7 @@
 	var Grid = function Grid(_ref) {
 	    var grid = _ref.grid;
 	    var snake = _ref.snake;
+	    var message = _ref.message;
 
 	    var MAX_WIDTH = grid[0].length;
 	    var MAX_HEIGHT = grid.length;
@@ -20634,6 +20633,7 @@
 	    return _react2.default.createElement(
 	        'div',
 	        { className: 'grid', style: gridStyle },
+	        message,
 	        cells
 	    );
 	};
@@ -21015,6 +21015,8 @@
 	        _classCallCheck(this, Game);
 
 	        this.size = size;
+	        this.initialSnake = [[0, 0], [0, 1], [0, 2]];
+	        this.initialApple = [0, 3];
 	        this.init();
 	    }
 
@@ -21026,8 +21028,8 @@
 	            var x = _size[0];
 	            var y = _size[1];
 
-	            this.apple = [0, 3];
-	            this.snake = [[0, 0], [0, 1], [0, 2]];
+	            this.apple = this.initialApple.slice();
+	            this.snake = this.initialSnake.slice();
 	            this.grid = (0, _grid.initializeGrid)(this.size, this.snake, this.apple);
 	            this.surface = x * y;
 	            this.score = 0;
@@ -21154,6 +21156,10 @@
 	var lastDiffTime = void 0;
 
 	function getBestMove(moves, scores) {
+	    if (!moves.length) {
+	        return { bestMove: false };
+	    }
+
 	    var scoresSelected = [];
 	    scores.forEach(function (score, index) {
 	        if (score > 0) {
@@ -21164,7 +21170,13 @@
 	    scoresSelected.sort(function (scoreA, scoreB) {
 	        return scoreB.score - scoreA.score;
 	    });
-	    return scoresSelected.shift();
+
+	    var bestMove = scoresSelected.shift();
+	    if (!bestMove) {
+	        return { bestMove: Number(moves[0]) };
+	    }
+
+	    return { bestMove: bestMove.move[0], bestMoveScore: bestMove.score };
 	}
 
 	function getPossibleMoves(cell, grid, snake) {
@@ -21211,10 +21223,14 @@
 	    var grid = game.grid.slice();
 	    var apple = game.apple.slice();
 
+	    if ((0, _utils.isEqual)(snake, game.initialSnake)) {
+	        maxTick = config.maxStartTick;
+	    }
+
 	    if ((0, _snake.isSnakeFillSurface)(snake, game.surface)) {
 	        var lastMove = getLastMove(snake, apple);
 	        if (lastMove) {
-	            return lastMove;
+	            return { nextMove: lastMove, debug: {} };
 	        }
 	    }
 
@@ -21271,13 +21287,18 @@
 
 	    lastDiffTime = newDiffTime;
 
-	    var bestMove = getBestMove(moves, scores);
+	    var _getBestMove = getBestMove(moves, scores);
+
+	    var bestMove = _getBestMove.bestMove;
+	    var bestMoveScore = _getBestMove.bestMoveScore;
+
+
 	    return {
-	        nextMove: bestMove.move[0],
+	        nextMove: bestMove,
 	        debug: {
 	            moves: moves.length,
 	            computationTime: newDiffTime,
-	            bestMoveScore: bestMove.score,
+	            bestMoveScore: bestMoveScore,
 	            maxTick: maxTick
 	        }
 	    };

@@ -75,6 +75,10 @@ export function getNextMove(game) {
     const grid = game.grid.slice();
     const apple = game.apple.slice();
 
+    if (isEqual(snake, game.initialSnake)) {
+        maxTick = config.maxStartTick;
+    }
+
     if (isSnakeFillSurface(snake, game.surface)) {
         const lastMove = getLastMove(snake, apple);
         if (lastMove) {

@@ -427,22 +427,22 @@ body {
   margin-top: 50px;
   transform: translate(-50%);
   align-items: flex-start; }
-  #app > div[data-reactroot] .message {
-    z-index: 1;
-    top: 40%;
-    right: 0;
-    left: 0;
-    margin: 0 auto;
-    position: absolute;
-    font-size: 45px;
-    text-align: center;
-    font-weight: bold; }
   #app > div[data-reactroot] .score {
     color: white; }
   #app > div[data-reactroot] .grid {
     display: flex;
     flex-wrap: wrap;
-    border: 1px solid grey; }
+    border: 1px solid grey;
+    position: relative; }
+    #app > div[data-reactroot] .grid .message {
+      position: absolute;
+      z-index: 1;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 26px;
+      font-weight: bold;
+      color: white; }
   #app > div[data-reactroot] aside .menu {
     color: white;
     padding: 8px;

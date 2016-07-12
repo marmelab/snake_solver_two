@@ -5,13 +5,15 @@ import { findRandomApplePosition } from './apple';
 export default class Game {
     constructor(size) {
         this.size = size;
+        this.initialSnake = [[0, 0], [0, 1], [0, 2]];
+        this.initialApple = [0, 3];
         this.init();
     }
 
     init() {
         const [x, y] = this.size;
-        this.apple = [0, 3];
-        this.snake = [[0, 0], [0, 1], [0, 2]];
+        this.apple = this.initialApple.slice();
+        this.snake = this.initialSnake.slice();
         this.grid = initializeGrid(this.size, this.snake, this.apple);
         this.surface = x * y;
         this.score = 0;

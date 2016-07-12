@@ -49,6 +49,10 @@ class App extends React.Component {
 
     tick() {
         setTimeout(() => {
+            if (game.isWon()) {
+                this.setState({ start: false });
+            }
+
             if (!this.state.start) {
                 this.tick();
                 return;
