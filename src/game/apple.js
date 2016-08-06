@@ -1,15 +1,13 @@
-const EMPTY = 0;
+import { isIn } from '../js/utils';
 
-export function findRandomApplePosition(grid) {
-    const MAX_WIDTH = grid[0].length;
-    const MAX_HEIGHT = grid.length;
-
+export function findRandomApplePosition([MAX_WIDTH, MAX_HEIGHT], snake) {
     const positions = [];
     for (let x = 0; x < MAX_WIDTH; x++) {
         for (let y = 0; y < MAX_HEIGHT; y++) {
-            const cell = grid[x][y];
-            if (cell === EMPTY) {
-                positions.push([x, y]);
+            const cell = [x, y];
+
+            if (!isIn(cell, snake)) {
+                positions.push(cell);
             }
         }
     }

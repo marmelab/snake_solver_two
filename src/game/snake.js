@@ -3,29 +3,32 @@ import { isEqual } from '../js/utils';
 
 const [UP, RIGHT, DOWN, LEFT] = [0, 1, 2, 3];
 
-export function getHeadSnake(snake) {
+export function getSnakeHead(snake) {
     return snake[snake.length - 1];
 }
 
-export function moveSnakeHead(snake, nextMove) {
-    const head = getHeadSnake(snake);
-    const newHead = getAdjacentCell(nextMove, head);
-    snake.push(newHead);
+export function getSnakeTail(snake) {
+    return snake[0];
+}
+
+export function isSnakeHeadAtPosition(snake, position) {
+    const head = getSnakeHead(snake);
+    return isEqual(head, position);
+}
+
+export function moveSnake(snake, apple, move) {
+    const snakeHead = getSnakeHead(snake);
+    snake.push(getAdjacentCell(move, snakeHead));
+
+    if (!isSnakeHeadAtPosition(snake, apple)) {
+        snake.shift();
+    }
+
     return snake;
 }
 
 export function isSnakeFillSurface(snake, surface) {
     return snake.length === surface - 1;
-}
-
-export function removeSnakeTail(snake) {
-    snake.shift();
-    return snake;
-}
-
-export function isSnakeHeadAtPosition(snake, position) {
-    const head = getHeadSnake(snake);
-    return isEqual(head, position);
 }
 
 export function getDirection(position, target) {
