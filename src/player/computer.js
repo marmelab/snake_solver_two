@@ -1,3 +1,4 @@
+import fetch from 'node-fetch';
 import { moveSnake, isSnakeHeadAtPosition, getSnakeHead, getSnakeTail, isSnakeFillSurface } from '../game/snake';
 import { getAdjacentCell, isEmptyCell, isOutsideBoundingBox } from '../game/grid';
 import { isEqual } from '../js/utils';
@@ -66,7 +67,34 @@ export function getLastMove(snake, apple) {
     })[0];
 }
 
-export function getNextMove(game) {
+export function * getNextMoveServer(game) {
+    const [width, height] = game.size;
+    const snake = game.snake.slice();
+    const apple = game.apple.slice();
+
+    const body = JSON.stringify({ width, height, snake, apple });
+    const res = yield fetch('http://localhost:1323/', {
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+        },
+        method: 'POST',
+        body,
+    });
+
+    if (!res.ok) {
+        return false;
+    }
+
+    const path = yield res.json();
+    return path[0];
+}
+
+export function * getNextMove(game) {
+    if (config.server) {
+        return { nextMove: yield getNextMoveServer(game), debug: {} };
+    }
+
     const snake = game.snake.slice();
     const apple = game.apple.slice();
 

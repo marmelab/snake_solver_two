@@ -3,5 +3,6 @@
     "cellSize": 50,
     "maxStartTick": 5,
     "displayGrid": false,
-    "defaultSize": [5, 5]
+    "defaultSize": [5, 5],
+    "server": false
 }
