@@ -1,4 +1,4 @@
-import { getPossibleMoves, getNextMove } from '../src/player/computer';
+import { getPossibleMoves, getNextMove } from '../src/player/client';
 import { getAdjacentCell } from '../src/game/grid';
 import Game from '../src/game/game';
 

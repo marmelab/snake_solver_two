@@ -3,7 +3,8 @@ import ReactDom from 'react-dom';
 import Grid from './grid';
 import DebugMenu from './debugMenu';
 import Game from '../game/game';
-import { getNextMove } from '../player/computer';
+import { getNextMove } from '../player/client';
+import { getNextMove as getNextMoveServer } from '../player/server';
 import co from 'co';
 
 const config = CONFIG;
@@ -18,7 +19,7 @@ class App extends React.Component {
             snake: game.snake,
             apple: game.apple,
             start: false,
-            debug: [],
+            debug: {},
         };
         this.start = this.start.bind(this);
         this.reset = this.reset.bind(this);
@@ -51,7 +52,12 @@ class App extends React.Component {
     }
 
     * moveSnake() {
-        const { nextMove, debug } = yield getNextMove(game);
+        let nextMove, debug;
+        if (config.server) {
+            ({ nextMove, debug } = yield getNextMoveServer(game));
+        } else {
+            ({ nextMove, debug } = getNextMove(game));
+        }
         game.nextTick(nextMove);
         this.setState({
             score: game.score,
