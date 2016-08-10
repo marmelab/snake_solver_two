@@ -21,5 +21,9 @@ export function * getNextMove(game) {
         return { nextMove: false, debug: {} };
     }
 
-    return { nextMove: (yield res.json())[0], debug: {} }; // @FIXME: add debug data
+    const data = yield res.json();
+    const nextMove = data.path[0];
+    const debug = data.debug;
+
+    return { nextMove, debug };
 }

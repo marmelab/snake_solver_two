@@ -35,12 +35,12 @@ describe('computer', () => {
         [ 0, 0, 0, 0, 0 ]
         [ 0, 0, 0, 0, 0 ]
     */
-    it('should not eat apple if no free mouvements', function * () {
+    it('should not eat apple if no free mouvements', () => {
         const game = new Game([5, 5]);
         game.apple = [0, 4];
         game.snake = [[2, 4], [1, 4], [1, 3], [0, 3]];
 
-        const { nextMove } = yield getNextMove(game);
+        const { nextMove } = getNextMove(game);
         assert.equal(nextMove, LEFT);
     });
 
@@ -51,12 +51,12 @@ describe('computer', () => {
         [ 1, 1, 1, 1, 1 ]
         [ 0, 2, 0, 0, 0 ]
     */
-    it('should not enter in closed zone', function * () {
+    it('should not enter in closed zone', () => {
         const game = new Game([5, 5]);
         game.apple = [4, 1];
         game.snake = [[0, 2], [0, 1], [0, 0], [1, 0], [2, 0], [3, 0], [3, 1], [3, 2], [3, 3], [3, 4]];
 
-        const { nextMove } = yield getNextMove(game);
+        const { nextMove } = getNextMove(game);
         assert.equal(nextMove, UP);
     });
 
@@ -67,7 +67,7 @@ describe('computer', () => {
         [ 1, 1, 1, 1, 1 ]
         [ 2, 1, 1, 1, 1 ]
     */
-    it('should eat last apple when finish game', function * () {
+    it('should eat last apple when finish game', () => {
         const game = new Game([5, 5]);
         game.apple = [4, 0];
         game.snake = [
@@ -75,7 +75,7 @@ describe('computer', () => {
             [1, 3], [1, 4], [0, 4], [0, 3], [0, 2], [0, 1], [0, 0], [1, 0], [2, 0], [3, 0], [3, 1], [4, 1],
         ];
 
-        const { nextMove } = yield getNextMove(game);
+        const { nextMove } = getNextMove(game);
         game.nextTick(nextMove);
 
         assert.equal(nextMove, LEFT);
@@ -89,9 +89,9 @@ describe('computer', () => {
         [ 0, 0, 0, 0, 0 ]
         [ 0, 0, 0, 0, 0 ]
     */
-    it('should return next move', function * () {
+    it('should return next move', () => {
         const game = new Game([5, 5]);
-        const { nextMove } = yield getNextMove(game);
+        const { nextMove } = getNextMove(game);
         assert.equal(nextMove, RIGHT);
     });
 
@@ -102,12 +102,12 @@ describe('computer', () => {
         [ 1, 1, 1, 0, 0 ]
         [ 2, 0, 0, 0, 0 ]
     */
-    it('should return next move (2)', function * () {
+    it('should return next move (2)', () => {
         const game = new Game([5, 5]);
         game.apple = [4, 0];
         game.snake = [[2, 1], [2, 2], [3, 2], [3, 1], [3, 0]];
 
-        const { nextMove } = yield getNextMove(game);
+        const { nextMove } = getNextMove(game);
         assert.equal(nextMove, DOWN);
     });
 
@@ -118,13 +118,13 @@ describe('computer', () => {
         [ 1, 1, 1, 1, 1 ]
         [ 1, 1, 1, 1, 1 ]
     */
-    it('should return next move (3)', function * () {
+    it('should return next move (3)', () => {
         const game = new Game([5, 5]);
         game.apple = [0, 3];
         game.snake = [[1, 4], [2, 4], [3, 4], [4, 4], [4, 3], [3, 3], [3, 2], [4, 2],
          [4, 1], [4, 0], [3, 0], [3, 1], [2, 1], [2, 2], [2, 3], [1, 3], [1, 2], [1, 1], [1, 0], [0, 0]];
 
-        const { nextMove } = yield getNextMove(game);
+        const { nextMove } = getNextMove(game);
         assert.equal(nextMove, RIGHT);
     });
 
@@ -135,13 +135,13 @@ describe('computer', () => {
         [ 1, 1, 1, 1, 1 ]
         [ 1, 1, 1, 1, 1 ]
     */
-    it('should return next move (4)', function * () {
+    it('should return next move (4)', () => {
         const game = new Game([5, 5]);
         game.apple = [1, 4];
         game.snake = [[3, 4], [4, 4], [4, 3], [3, 3], [2, 3], [2, 2], [3, 2], [4, 2], [4, 1], [4, 0], [3, 0],
          [3, 1], [2, 1], [2, 0], [1, 0], [0, 0], [0, 1], [0, 2], [0, 3], [0, 4]];
 
-        const { nextMove } = yield getNextMove(game);
+        const { nextMove } = getNextMove(game);
         assert.equal(nextMove, DOWN);
     });
 
@@ -152,13 +152,13 @@ describe('computer', () => {
         [ 1, 1, 1, 0, 1 ]
         [ 1, 1, 1, 1, 1 ]
     */
-    it('should return next move (5)', function * () {
+    it('should return next move (5)', () => {
         const game = new Game([5, 5]);
         game.apple = [1, 3];
         game.snake = [[4, 2], [4, 1], [4, 0], [3, 0], [3, 1], [3, 2], [2, 2], [2, 1], [2, 0], [1, 0], [0, 0],
          [0, 1], [0, 2], [0, 3], [0, 4], [1, 4], [2, 4], [3, 4], [4, 4], [4, 3]];
 
-        const { nextMove } = yield getNextMove(game);
+        const { nextMove } = getNextMove(game);
         assert.equal(nextMove, LEFT);
     });
 
@@ -169,13 +169,13 @@ describe('computer', () => {
         [ 0, 1, 1, 0, 1 ]
         [ 0, 0, 1, 1, 1 ]
     */
-    it('should return next move (6)', function * () {
+    it('should return next move (6)', () => {
         const game = new Game([5, 5]);
         game.apple = [1, 3];
         game.snake = [[0, 3], [0, 2], [0, 1], [0, 0], [1, 0], [1, 1], [1, 2], [2, 2], [2, 1], [3, 1], [3, 2],
          [4, 2], [4, 3], [4, 4], [3, 4], [2, 4], [1, 4]];
 
-        const { nextMove } = yield getNextMove(game);
+        const { nextMove } = getNextMove(game);
         assert.equal(nextMove, LEFT);
     });
 
@@ -186,13 +186,13 @@ describe('computer', () => {
         [ 1, 1, 0, 0, 0 ]
         [ 0, 0, 0, 0, 2 ]
     */
-    it('should return next move (7)', function * () {
+    it('should return next move (7)', () => {
         const game = new Game([5, 5]);
         game.apple = [4, 4];
         game.snake = [[1, 4], [0, 4], [0, 3], [0, 2], [0, 1], [1, 1], [1, 0], [2, 0], [3, 0], [3, 1], [2, 1],
          [2, 2], [2, 3], [2, 4]];
 
-        const { nextMove } = yield getNextMove(game);
+        const { nextMove } = getNextMove(game);
         assert.equal(nextMove, UP);
     });
 
@@ -206,7 +206,7 @@ describe('computer', () => {
         @TODO: In this case, there is the possibility that several apple appear in the left surface.
         If after eat the first apple a second appear at side, the snake is blocked.
     */
-    it.skip('should return next move (8)', function * () {
+    it.skip('should return next move (8)', () => {
         const game = new Game([5, 5]);
         game.apple = [1, 0];
         game.snake = [
@@ -214,7 +214,7 @@ describe('computer', () => {
             [3, 1], [4, 1],
         ];
 
-        const { nextMove } = yield getNextMove(game);
+        const { nextMove } = getNextMove(game);
         assert.equal(nextMove, RIGHT);
     });
 });
