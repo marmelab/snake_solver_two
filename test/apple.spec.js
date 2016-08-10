@@ -12,12 +12,16 @@ describe('apple', () => {
     */
     it('should generate apple random position after eat', () => {
         const game = new Game([5, 5]);
-        const apple = game.apple.slice();
+        const apple = game.apple;
 
         game.nextTick(RIGHT);
 
-        const newApple = game.getApple();
+        const newApple = game.apple;
         assert.notEqual(JSON.stringify(apple), JSON.stringify(newApple));
+
+        for (const s of game.snake) {
+            assert.notEqual(JSON.stringify(s), JSON.stringify(newApple));
+        }
     });
 
     /*

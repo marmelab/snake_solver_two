@@ -12,9 +12,10 @@ class App extends React.Component {
     constructor() {
         super();
         this.state = {
-            grid: game.getGrid(),
+            size: game.size,
             score: game.score,
             snake: game.snake,
+            apple: game.apple,
             start: false,
             debug: [],
         };
@@ -34,9 +35,10 @@ class App extends React.Component {
     reset() {
         game.init();
         this.setState({
-            grid: game.getGrid(),
+            size: game.size,
             score: game.score,
             snake: game.snake,
+            apple: game.apple,
             start: false,
             debug: {},
         });
@@ -45,6 +47,17 @@ class App extends React.Component {
     changeSizeGrid(event) {
         game.size = event.target.value.split('x').map(size => Number(size));
         this.reset();
+    }
+
+    moveSnake() {
+        const { nextMove, debug } = getNextMove(game);
+        game.nextTick(nextMove);
+        this.setState({
+            score: game.score,
+            snake: game.snake,
+            apple: game.apple,
+            debug,
+        });
     }
 
     tick() {
@@ -58,14 +71,7 @@ class App extends React.Component {
                 return;
             }
 
-            const { nextMove, debug } = getNextMove(game);
-            game.nextTick(nextMove);
-            this.setState({
-                grid: game.getGrid(),
-                score: game.score,
-                snake: game.snake,
-                debug,
-            });
+            this.moveSnake();
             this.tick();
 
             if (game.isLost()) {
@@ -75,22 +81,29 @@ class App extends React.Component {
     }
 
     renderMessage() {
+        let message = '';
+
         if (game.isWon()) {
-            return (<div className="message">You win !</div>);
+            message = 'You win !';
         }
 
         if (game.isLost()) {
-            return (<div className="message">You lose..</div>);
+            message = 'You lose..';
         }
 
-        return false;
+        return <div className="message">{message}</div>;
     }
 
     render() {
         const buttonTxt = this.state.start ? 'Stop' : 'Start';
         return (
             <div>
-                <Grid grid={this.state.grid} snake={this.state.snake} message={this.renderMessage()} />
+                <Grid
+                    size={this.state.size}
+                    snake={this.state.snake}
+                    apple={this.state.apple}
+                    message={this.renderMessage()}
+                />
                 <aside>
                     <DebugMenu
                         computationTime={this.state.debug.computationTime}

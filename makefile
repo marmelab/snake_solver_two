@@ -20,4 +20,4 @@ test: ## Run unit tests
 
 build: ## Build with webpack
 	@ mkdir -p dist
-	@ ./node_modules/.bin/webpack
+	@ ./node_modules/.bin/webpack -p

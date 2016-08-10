@@ -1,5 +1,5 @@
-import { moveSnakeHead, removeSnakeTail, isSnakeHeadAtPosition, getHeadSnake, isSnakeFillSurface } from '../game/snake';
-import { initializeGrid, getAdjacentCell, isEmptyCell, isOutsideBoundingBox } from '../game/grid';
+import { moveSnake, isSnakeHeadAtPosition, getSnakeHead, getSnakeTail, isSnakeFillSurface } from '../game/snake';
+import { getAdjacentCell, isEmptyCell, isOutsideBoundingBox } from '../game/grid';
 import { isEqual } from '../js/utils';
 
 const [UP, RIGHT, DOWN, LEFT] = [0, 1, 2, 3];
@@ -9,10 +9,6 @@ let maxTick = config.maxStartTick;
 let lastDiffTime;
 
 export function getBestMove(moves, scores) {
-    if (!moves.length) {
-        return { bestMove: false };
-    }
-
     const scoresSelected = [];
     scores.forEach((score, index) => {
         if (score > 0) {
@@ -21,23 +17,18 @@ export function getBestMove(moves, scores) {
     });
 
     scoresSelected.sort((scoreA, scoreB) => scoreB.score - scoreA.score);
-
-    const bestMove = scoresSelected.shift();
-    if (!bestMove) {
-        return { bestMove: Number(moves[0]) };
-    }
-
-    return { bestMove: bestMove.move[0], bestMoveScore: bestMove.score };
+    return scoresSelected.shift();
 }
 
-export function getPossibleMoves(cell, grid, snake) {
-    const snakeTail = snake[0];
+export function getPossibleMoves(snake, size) {
+    const snakeHead = getSnakeHead(snake);
+    const snakeTail = getSnakeTail(snake);
 
     const possibleMove = [];
     [UP, RIGHT, DOWN, LEFT].forEach(move => {
-        const adjacentCell = getAdjacentCell(move, cell);
+        const adjacentCell = getAdjacentCell(move, snakeHead);
         if (isEqual(adjacentCell, snakeTail) ||
-            (!isOutsideBoundingBox(adjacentCell, grid) && isEmptyCell(adjacentCell, grid))) {
+            (!isOutsideBoundingBox(adjacentCell, size) && isEmptyCell(adjacentCell, snake))) {
             possibleMove.push(move);
         }
     });
@@ -45,11 +36,16 @@ export function getPossibleMoves(cell, grid, snake) {
     return possibleMove;
 }
 
-export function getMoveScore(move, snake, apple, grid, tick) {
-    const newSnake = moveSnakeHead(snake.slice(), move);
+export function isSnakeHasFreeSpace(snake, size) {
+    return !!getPossibleMoves(snake, size).length;
+}
+
+export function getMoveScore(size, move, snake, apple, tick) {
+    const newSnake = moveSnake(snake.slice(), apple, move);
+
     if (isSnakeHeadAtPosition(newSnake, apple)) {
         // @FIXME: estimate freedom of movement
-        if (!getPossibleMoves(apple, grid, snake).length) {
+        if (!isSnakeHasFreeSpace(snake, size)) {
             return 0;
         }
 
@@ -60,7 +56,7 @@ export function getMoveScore(move, snake, apple, grid, tick) {
 }
 
 export function getLastMove(snake, apple) {
-    const snakeHead = getHeadSnake(snake);
+    const snakeHead = getSnakeHead(snake);
     return [UP, RIGHT, DOWN, LEFT].filter(move => {
         const adjacentCell = getAdjacentCell(move, snakeHead);
         if (isEqual(adjacentCell, apple)) {
@@ -72,7 +68,6 @@ export function getLastMove(snake, apple) {
 
 export function getNextMove(game) {
     const snake = game.snake.slice();
-    const grid = game.grid.slice();
     const apple = game.apple.slice();
 
     if (isEqual(snake, game.initialSnake)) {
@@ -87,11 +82,10 @@ export function getNextMove(game) {
     }
 
     const startTime = new Date().getTime();
-    const snakeHead = getHeadSnake(snake);
-    const possibleMoves = getPossibleMoves(snakeHead, grid, snake);
+    const possibleMoves = getPossibleMoves(snake, game.size);
     let scores = new Uint8Array(possibleMoves.length);
     let moves = possibleMoves.map((possibleMove, index) => {
-        scores[index] = getMoveScore(possibleMove, snake, apple, grid, 1);
+        scores[index] = getMoveScore(game.size, possibleMove, snake, apple, 1);
         return new Uint8Array([possibleMove]);
     });
 
@@ -99,22 +93,14 @@ export function getNextMove(game) {
         const newMoves = [];
         let newScores = new Uint8Array([]);
         moves.forEach((move, index) => {
-            let newApple = game.apple.slice();
             let newSnake = game.snake.slice();
 
             move.forEach(m => {
-                newSnake = moveSnakeHead(newSnake, m);
-                if (isSnakeHeadAtPosition(newSnake, newApple)) {
-                    newApple = '';
-                } else {
-                    newSnake = removeSnakeTail(newSnake);
-                }
+                newSnake = moveSnake(newSnake, apple, m);
             });
 
-            const newGrid = initializeGrid(game.size, newSnake, newApple);
-            const newSnakeHead = getHeadSnake(newSnake);
-            getPossibleMoves(newSnakeHead, newGrid, newSnake).forEach(possibleMove => {
-                const newScore = getMoveScore(possibleMove, newSnake, apple, newGrid, tick);
+            getPossibleMoves(newSnake, game.size).forEach(possibleMove => {
+                const newScore = getMoveScore(game.size, possibleMove, newSnake, apple, tick);
                 newScores = new Uint8Array([...newScores, Math.max(newScore, scores[index])]);
                 newMoves.push(new Uint8Array([...move, possibleMove]));
             });
@@ -124,6 +110,11 @@ export function getNextMove(game) {
             scores = newScores;
         }
     }
+
+    if (!moves.length) {
+        return { nextMove: false, debug: {} };
+    }
+
     const endTime = new Date().getTime();
     const newDiffTime = endTime - startTime;
 
@@ -135,14 +126,14 @@ export function getNextMove(game) {
 
     lastDiffTime = newDiffTime;
 
-    const { bestMove, bestMoveScore } = getBestMove(moves, scores);
+    const bestMove = getBestMove(moves, scores);
 
     return {
-        nextMove: bestMove,
+        nextMove: bestMove.move[0],
         debug: {
-            moves: moves.length,
+            bestMoveScore: bestMove.score,
             computationTime: newDiffTime,
-            bestMoveScore,
+            moves: moves.length,
             maxTick,
         },
     };

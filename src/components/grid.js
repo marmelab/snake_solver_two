@@ -3,32 +3,27 @@ import Cell from './cell';
 import { getBlock } from '../game/snake';
 import { isEqual } from '../js/utils';
 
-const BLOCK = 1;
-const APPLE = 2;
-
-const Grid = ({ grid, snake, message }) => {
-    const MAX_WIDTH = grid[0].length;
-    const MAX_HEIGHT = grid.length;
+const Grid = ({ size, snake, apple, message }) => {
+    const [MAX_WIDTH, MAX_HEIGHT] = size;
     const cells = [];
 
     for (let x = 0; x < MAX_WIDTH; x++) {
         for (let y = 0; y < MAX_HEIGHT; y++) {
-            const cell = grid[x][y];
+            let cell = false;
+
+            if (isEqual(apple, [x, y])) {
+                cells.push(<Cell type="apple" />);
+                continue;
+            }
 
             snake.forEach((snakeBlock, index) => {
                 if (isEqual(snakeBlock, [x, y])) {
-                    const block = getBlock(snake, index);
-                    cells.push(<Cell type={`snake ${block}`} />);
+                    cell = true;
+                    cells.push(<Cell type={`snake ${getBlock(snake, index)}`} />);
                 }
             });
 
-            switch (cell) {
-            case BLOCK:
-                break;
-            case APPLE:
-                cells.push(<Cell type="apple" />);
-                break;
-            default:
+            if (!cell) {
                 cells.push(<Cell type="empty" />);
             }
         }
@@ -49,8 +44,10 @@ const Grid = ({ grid, snake, message }) => {
 };
 
 Grid.propTypes = {
-    grid: React.PropTypes.array.isRequired,
+    size: React.PropTypes.array.isRequired,
     snake: React.PropTypes.array.isRequired,
+    apple: React.PropTypes.array.isRequired,
+    message: React.PropTypes.object,
 };
 
 export default Grid;

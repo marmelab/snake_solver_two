@@ -31,7 +31,7 @@ describe('snake', () => {
         game.nextTick(DOWN);
 
         assert.equal(game.snake.length, 3);
-        assert.equal(JSON.stringify(game.grid[0][0]), 0);
+        assert.equal(JSON.stringify(game.snake[0]), JSON.stringify([0, 1]));
     });
 
     describe('getBlocks()', () => {
