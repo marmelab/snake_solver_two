@@ -1,11 +1,11 @@
+import co from 'co';
 import React from 'react';
 import ReactDom from 'react-dom';
 import Grid from './grid';
 import DebugMenu from './debugMenu';
 import Game from '../game/game';
-import { getNextMove } from '../player/client';
+import { getNextMove as getNextMoveClient } from '../player/client';
 import { getNextMove as getNextMoveServer } from '../player/server';
-import co from 'co';
 
 const config = CONFIG;
 const game = new Game(config.defaultSize);
@@ -56,7 +56,7 @@ class App extends React.Component {
         if (config.server) {
             ({ nextMove, debug } = yield getNextMoveServer(game));
         } else {
-            ({ nextMove, debug } = getNextMove(game));
+            ({ nextMove, debug } = yield getNextMoveClient(game));
         }
         game.nextTick(nextMove);
         this.setState({

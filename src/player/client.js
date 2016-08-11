@@ -66,7 +66,7 @@ export function getLastMove(snake, apple) {
     })[0];
 }
 
-export function getNextMove(game) {
+export function * getNextMove(game) {
     const snake = game.snake.slice();
     const apple = game.apple.slice();
 
@@ -111,10 +111,6 @@ export function getNextMove(game) {
         }
     }
 
-    if (!moves.length) {
-        return { nextMove: false, debug: {} };
-    }
-
     const endTime = new Date().getTime();
     const newDiffTime = endTime - startTime;
 
@@ -126,15 +122,21 @@ export function getNextMove(game) {
 
     lastDiffTime = newDiffTime;
 
-    const bestMove = getBestMove(moves, scores);
+    return new Promise((resolve, reject) => {
+        if (!moves.length) {
+            reject({ nextMove: false, debug: {} });
+        }
 
-    return {
-        nextMove: bestMove.move[0],
-        debug: {
-            bestMoveScore: bestMove.score,
-            computationTime: newDiffTime,
-            moves: moves.length,
-            maxTick,
-        },
-    };
+        const bestMove = getBestMove(moves, scores);
+
+        resolve({
+            nextMove: bestMove.move[0],
+            debug: {
+                bestMoveScore: bestMove.score,
+                computationTime: newDiffTime,
+                moves: moves.length,
+                maxTick,
+            },
+        });
+    });
 }

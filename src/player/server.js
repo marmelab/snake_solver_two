@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 
-const entrypoint = 'http://localhost:1323/';
+const config = CONFIG;
 
 export function * getNextMove(game) {
     const [width, height] = game.size;
@@ -8,7 +8,7 @@ export function * getNextMove(game) {
     const apple = game.apple.slice();
 
     const body = JSON.stringify({ width, height, snake, apple });
-    const res = yield fetch(entrypoint, {
+    const res = yield fetch(config.entrypoint, {
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',

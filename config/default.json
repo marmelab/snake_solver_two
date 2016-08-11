@@ -4,5 +4,6 @@
     "maxStartTick": 5,
     "displayGrid": false,
     "defaultSize": [5, 5],
-    "server": false
+    "server": false,
+    "entrypoint": "http://localhost:1323/"
 }
