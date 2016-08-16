@@ -1,9 +1,11 @@
+import co from 'co';
 import React from 'react';
 import ReactDom from 'react-dom';
 import Grid from './grid';
 import DebugMenu from './debugMenu';
 import Game from '../game/game';
-import { getNextMove } from '../player/computer';
+import { getNextMove as getNextMoveClient } from '../player/client';
+import { getNextMove as getNextMoveServer } from '../player/server';
 
 const config = CONFIG;
 const game = new Game(config.defaultSize);
@@ -17,7 +19,7 @@ class App extends React.Component {
             snake: game.snake,
             apple: game.apple,
             start: false,
-            debug: [],
+            debug: {},
         };
         this.start = this.start.bind(this);
         this.reset = this.reset.bind(this);
@@ -49,8 +51,13 @@ class App extends React.Component {
         this.reset();
     }
 
-    moveSnake() {
-        const { nextMove, debug } = getNextMove(game);
+    * moveSnake() {
+        let nextMove, debug;
+        if (config.server) {
+            ({ nextMove, debug } = yield getNextMoveServer(game));
+        } else {
+            ({ nextMove, debug } = yield getNextMoveClient(game));
+        }
         game.nextTick(nextMove);
         this.setState({
             score: game.score,
@@ -61,22 +68,25 @@ class App extends React.Component {
     }
 
     tick() {
+        const that = this;
         setTimeout(() => {
-            if (game.isWon()) {
-                this.setState({ start: false });
-            }
+            co(function*() {
+                if (game.isWon()) {
+                    that.setState({ start: false });
+                }
 
-            if (!this.state.start) {
-                this.tick();
-                return;
-            }
+                if (!that.state.start) {
+                    that.tick();
+                    return;
+                }
 
-            this.moveSnake();
-            this.tick();
+                yield that.moveSnake();
+                that.tick();
 
-            if (game.isLost()) {
-                this.setState({ start: false });
-            }
+                if (game.isLost()) {
+                    that.setState({ start: false });
+                }
+            });
         }, config.speed);
     }
 
