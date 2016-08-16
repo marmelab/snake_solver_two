@@ -1,7 +1,9 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const config = require('config');
-const webpack = require('webpack');
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import ExtractTextPlugin from 'extract-text-webpack-plugin';
+import config from 'config';
+import webpack from 'webpack';
+import Dashboard from 'webpack-dashboard';
+import DashboardPlugin from 'webpack-dashboard/plugin';
 
 module.exports = {
     entry: {
@@ -46,5 +48,6 @@ module.exports = {
         new webpack.DefinePlugin({
             CONFIG: JSON.stringify(config),
         }),
+        new DashboardPlugin(new Dashboard().setData),
     ],
 };
