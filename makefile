@@ -11,6 +11,7 @@ run: ## Run application
 		--progress \
 		--no-info \
 		--hot \
+		--quiet \
 		--inline
 
 .PHONY: test
