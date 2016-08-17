@@ -17,6 +17,10 @@ body{
     transform: translate(-50%);
     align-items: flex-start;
 
+    p {
+        font-size: 14px;
+    }
+
     .score {
         color: $text-color;
     }

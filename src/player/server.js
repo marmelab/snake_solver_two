@@ -2,7 +2,7 @@ import fetch from 'node-fetch';
 
 const config = CONFIG;
 
-export function * getNextMove(game) {
+export function* getNextMove(game) {
     const [width, height] = game.size;
     const snake = game.snake.slice();
     const apple = game.apple.slice();
@@ -22,8 +22,15 @@ export function * getNextMove(game) {
     }
 
     const data = yield res.json();
-    const nextMove = data.path[0];
-    const debug = data.debug;
+    const nextMove = data.Path[0];
 
-    return { nextMove, debug };
+    return {
+        nextMove,
+        debug: {
+            bestMoveScore: data.BestMoveScore,
+            computationTime: data.ComputationTime,
+            maxTick: data.MaxTick,
+            moves: data.PossibleMoves,
+        },
+    };
 }
